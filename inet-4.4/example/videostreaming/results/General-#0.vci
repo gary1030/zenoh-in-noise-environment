@@ -1,0 +1,405 @@
+file 21059 1668927120                                           
+version 3
+run General-0-20221120-14:48:05-15665
+attr configname General
+attr datetime 20221120-14:48:05
+attr datetimef 20221120-144805
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsd ""
+attr iterationvarsf ""
+attr measurement ""
+attr network VideoStreamingNetwork
+attr processid 15665
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+config image-path ../../images
+config network VideoStreamingNetwork
+config scheduler-class inet::RealTimeScheduler
+config sim-time-limit 225s
+config **.crcMode "\"computed\""
+config **.fcsMode "\"computed\""
+config *.host1.eth[0].typename ExtUpperEthernetInterface
+config *.host1.eth[0].device "\"tapa\""
+config *.host1.eth[0].copyConfiguration "\"copyFromExt\""
+config *.host2.eth[0].typename ExtUpperEthernetInterface
+config *.host2.eth[0].device "\"tapb\""
+config *.host2.eth[0].copyConfiguration "\"copyFromExt\""
+config *.configurator.config "xml(\"<config>                                 <interface hosts='router' names='eth0' address='192.168.2.99' netmask='255.255.255.0'/>                                 <interface hosts='router' names='eth1' address='192.168.3.99' netmask='255.255.255.0'/>                              </config>\")"
+config *.router.ipv4.natTable.config "xml(\"<config>                                         <entry type='prerouting'                                         packetFilter='has(Ipv4Header) &amp;&amp; Ipv4Header.destAddress.str() == \\\"192.168.2.99\\\"'                                         srcAddress='192.168.3.99' destAddress='192.168.3.20'/>                                      </config>\")"
+config *.visualizer.*.interfaceTableVisualizer.displayInterfaceTables true
+config *.visualizer.*.interfaceTableVisualizer.nodeFilter "\"not name=~switch*\""
+config **.duplexMode true
+config **.eth*.bitrate 100Mbps
+
+vector 0 VideoStreamingNetwork.host1.udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetSentToUpper
+attr title "packets passed up, count"
+vector 1 VideoStreamingNetwork.host1.udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+vector 2 VideoStreamingNetwork.host1.udp droppedPkBadChecksum:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+vector 3 VideoStreamingNetwork.host2.udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetSentToUpper
+attr title "packets passed up, count"
+vector 4 VideoStreamingNetwork.host2.udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+vector 5 VideoStreamingNetwork.host2.udp droppedPkBadChecksum:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+vector 6 VideoStreamingNetwork.host1.eth[0].tap packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceived
+attr title "packets received, packetBytes"
+vector 7 VideoStreamingNetwork.host1.eth[0].tap packetSentFromLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToLower
+attr title "packets sent to higher layer, packetBytes"
+vector 8 VideoStreamingNetwork.host2.eth[0].tap packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceived
+attr title "packets received, packetBytes"
+vector 9 VideoStreamingNetwork.host2.eth[0].tap packetSentFromLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToLower
+attr title "packets sent to higher layer, packetBytes"
+vector 10 VideoStreamingNetwork.host1.eth[0].queue incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushStarted)
+attr title "incoming packet lengths"
+attr unit b
+vector 11 VideoStreamingNetwork.host1.eth[0].queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+vector 12 VideoStreamingNetwork.host1.eth[0].queue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+vector 13 VideoStreamingNetwork.host1.eth[0].queue outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "outgoing packet lengths"
+attr unit b
+vector 14 VideoStreamingNetwork.host1.eth[0].queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+vector 15 VideoStreamingNetwork.host1.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, packetBytes"
+vector 16 VideoStreamingNetwork.host1.eth[0].queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + count(packetPushStarted) - count(packetPulled) - count(packetRemoved) - count(packetDropped)))"
+attr title "queue length"
+attr unit pk
+vector 17 VideoStreamingNetwork.host1.eth[0].queue queueBitLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + sum(packetLength(packetPushStarted)) - sum(packetLength(packetPulled)) - sum(packetLength(packetRemoved)) - sum(packetLength(packetDropped))))"
+attr title "queue bit length"
+attr unit b
+vector 18 VideoStreamingNetwork.host2.eth[0].queue incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushStarted)
+attr title "incoming packet lengths"
+attr unit b
+vector 19 VideoStreamingNetwork.host2.eth[0].queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+vector 20 VideoStreamingNetwork.host2.eth[0].queue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+vector 21 VideoStreamingNetwork.host2.eth[0].queue outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "outgoing packet lengths"
+attr unit b
+vector 22 VideoStreamingNetwork.host2.eth[0].queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+vector 23 VideoStreamingNetwork.host2.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, packetBytes"
+vector 24 VideoStreamingNetwork.host2.eth[0].queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + count(packetPushStarted) - count(packetPulled) - count(packetRemoved) - count(packetDropped)))"
+attr title "queue length"
+attr unit pk
+vector 25 VideoStreamingNetwork.host2.eth[0].queue queueBitLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + sum(packetLength(packetPushStarted)) - sum(packetLength(packetPulled)) - sum(packetLength(packetRemoved)) - sum(packetLength(packetDropped))))"
+attr title "queue bit length"
+attr unit b
+vector 26 VideoStreamingNetwork.host1.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToLower
+attr title "packets transmitted, packetBytes"
+vector 27 VideoStreamingNetwork.switch1.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source rxPkOk
+attr title "packets received OK, packetBytes"
+vector 28 VideoStreamingNetwork.switch1.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToUpper
+attr title "packets passed to higher layer, packetBytes"
+vector 29 VideoStreamingNetwork.switch1.ethernet decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source decapPk
+attr title "packets decapsulated, packetBytes"
+vector 30 VideoStreamingNetwork.host2.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToLower
+attr title "packets transmitted, packetBytes"
+vector 31 VideoStreamingNetwork.switch2.eth[1].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source rxPkOk
+attr title "packets received OK, packetBytes"
+vector 32 VideoStreamingNetwork.switch2.eth[1].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToUpper
+attr title "packets passed to higher layer, packetBytes"
+vector 33 VideoStreamingNetwork.switch1.ethernet encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source encapPk
+attr title "packets encapsulated, packetBytes"
+vector 34 VideoStreamingNetwork.switch2.ethernet decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source decapPk
+attr title "packets decapsulated, packetBytes"
+vector 35 VideoStreamingNetwork.switch1.eth[1].queue incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushStarted)
+attr title "incoming packet lengths"
+attr unit b
+vector 36 VideoStreamingNetwork.switch1.eth[1].queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+vector 37 VideoStreamingNetwork.switch1.eth[1].queue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+vector 38 VideoStreamingNetwork.switch1.eth[1].queue outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "outgoing packet lengths"
+attr unit b
+vector 39 VideoStreamingNetwork.switch1.eth[1].queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+vector 40 VideoStreamingNetwork.switch1.eth[1].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, packetBytes"
+vector 41 VideoStreamingNetwork.switch1.eth[1].queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + count(packetPushStarted) - count(packetPulled) - count(packetRemoved) - count(packetDropped)))"
+attr title "queue length"
+attr unit pk
+vector 42 VideoStreamingNetwork.switch1.eth[1].queue queueBitLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + sum(packetLength(packetPushStarted)) - sum(packetLength(packetPulled)) - sum(packetLength(packetRemoved)) - sum(packetLength(packetDropped))))"
+attr title "queue bit length"
+attr unit b
+vector 43 VideoStreamingNetwork.switch2.ethernet encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source encapPk
+attr title "packets encapsulated, packetBytes"
+vector 44 VideoStreamingNetwork.switch1.eth[1].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToLower
+attr title "packets transmitted, packetBytes"
+vector 45 VideoStreamingNetwork.switch2.eth[0].queue incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushStarted)
+attr title "incoming packet lengths"
+attr unit b
+vector 46 VideoStreamingNetwork.switch2.eth[0].queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+vector 47 VideoStreamingNetwork.switch2.eth[0].queue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+vector 48 VideoStreamingNetwork.switch2.eth[0].queue outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "outgoing packet lengths"
+attr unit b
+vector 49 VideoStreamingNetwork.switch2.eth[0].queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+vector 50 VideoStreamingNetwork.switch2.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, packetBytes"
+vector 51 VideoStreamingNetwork.switch2.eth[0].queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + count(packetPushStarted) - count(packetPulled) - count(packetRemoved) - count(packetDropped)))"
+attr title "queue length"
+attr unit pk
+vector 52 VideoStreamingNetwork.switch2.eth[0].queue queueBitLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + sum(packetLength(packetPushStarted)) - sum(packetLength(packetPulled)) - sum(packetLength(packetRemoved)) - sum(packetLength(packetDropped))))"
+attr title "queue bit length"
+attr unit b
+vector 53 VideoStreamingNetwork.router.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source rxPkOk
+attr title "packets received OK, packetBytes"
+vector 54 VideoStreamingNetwork.router.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToUpper
+attr title "packets passed to higher layer, packetBytes"
+0	15632 8 0 0 0 0 1 0 0 0 0
+1	15640 8 0 0 0 0 1 0 0 0 0
+2	15648 8 0 0 0 0 1 0 0 0 0
+3	15656 8 0 0 0 0 1 0 0 0 0
+4	15664 8 0 0 0 0 1 0 0 0 0
+5	15672 8 0 0 0 0 1 0 0 0 0
+6	15680 20 0 0 5.073990195 5.073990195 1 114 114 114 12996
+7	15700 20 0 0 5.073990195 5.073990195 1 114 114 114 12996
+8	15720 20 0 0 5.073990195 5.073990195 1 114 114 114 12996
+9	15740 20 0 0 5.073990195 5.073990195 1 114 114 114 12996
+10	15760 21 1 1 5.073990195 5.073990195 1 912 912 912 831744
+11	15781 540 1 1 0.1 5 50 0 0 0 0
+12	16321 19 1 1 5.073990195 5.073990195 1 0 0 0 0
+13	16340 21 1 1 5.073990195 5.073990195 1 912 912 912 831744
+14	16361 540 1 1 0.1 5 50 0 0 0 0
+15	16901 21 1 1 5.073990195 5.073990195 1 114 114 114 12996
+16	16922 19 1 1 5.073990195 5.073990195 1 0 0 0 0
+17	16941 19 1 1 5.073990195 5.073990195 1 0 0 0 0
+18	16960 21 2 2 5.073999955 5.073999955 1 912 912 912 831744
+19	16981 540 2 2 0.1 5 50 0 0 0 0
+20	17521 26 2 2 5.073999955 5.073999955 1 9.76e-06 9.76e-06 9.76e-06 9.52576e-11
+21	17547 21 2 2 5.073999955 5.073999955 1 912 912 912 831744
+22	17568 540 2 2 0.1 5 50 0 0 0 0
+23	18108 21 2 2 5.073999955 5.073999955 1 114 114 114 12996
+24	18129 19 2 2 5.073999955 5.073999955 1 0 0 0 0
+25	18148 19 2 2 5.073999955 5.073999955 1 0 0 0 0
+26	18167 21 3 3 5.073999955 5.073999955 1 114 114 114 12996
+27	18188 21 4 4 5.074000915 5.074000915 1 114 114 114 12996
+28	18209 21 4 4 5.074000915 5.074000915 1 114 114 114 12996
+29	18230 20 6 6 5.074009715 5.074009715 1 96 96 96 9216
+30	18250 21 7 7 5.074009715 5.074009715 1 114 114 114 12996
+31	18271 21 9 9 5.074009765 5.074009765 1 114 114 114 12996
+32	18292 21 9 9 5.074009765 5.074009765 1 114 114 114 12996
+33	18313 21 10 10 5.074009765 5.074009765 1 96 96 96 9216
+34	18334 21 11 11 5.074009765 5.074009765 1 96 96 96 9216
+35	18355 22 12 12 5.074009765 5.074009765 1 912 912 912 831744
+36	18377 590 12 12 0.1 5 50 0 0 0 0
+37	18967 20 12 12 5.074009765 5.074009765 1 0 0 0 0
+38	18987 22 12 12 5.074009765 5.074009765 1 912 912 912 831744
+39	19009 590 12 12 0.1 5 50 0 0 0 0
+40	19599 22 12 12 5.074009765 5.074009765 1 114 114 114 12996
+41	19621 20 12 12 5.074009765 5.074009765 1 0 0 0 0
+42	19641 20 12 12 5.074009765 5.074009765 1 0 0 0 0
+43	19661 21 15 15 5.074019525 5.074019525 1 96 96 96 9216
+44	19682 22 16 16 5.074019525 5.074019525 1 114 114 114 12996
+45	19704 22 17 17 5.074019575 5.074019575 1 912 912 912 831744
+46	19726 590 17 17 0.1 5 50 0 0 0 0
+47	20316 24 17 17 5.074019575 5.074019575 1 5e-08 5e-08 5e-08 2.5e-15
+48	20340 22 17 17 5.074019575 5.074019575 1 912 912 912 831744
+49	20362 590 17 17 0.1 5 50 0 0 0 0
+50	20952 22 17 17 5.074019575 5.074019575 1 114 114 114 12996
+51	20974 20 17 17 5.074019575 5.074019575 1 0 0 0 0
+52	20994 20 17 17 5.074019575 5.074019575 1 0 0 0 0
+53	21014 22 18 18 5.074020485 5.074020485 1 114 114 114 12996
+54	21036 22 18 18 5.074020485 5.074020485 1 114 114 114 12996
+
