@@ -46,7 +46,12 @@ parser.add_argument('--config', '-c', dest='config',
                     metavar='FILE',
                     type=str,
                     help='A configuration file.')
+parser.add_argument('--result', '-r', dest='result',
+                    metavar='FILE',
+                    type=str,
+                    help='A file to write the subscription result to.')
 
+result_filepath = "received-data/result.json"
 args = parser.parse_args()
 conf = zenoh.Config.from_file(
     args.config) if args.config is not None else zenoh.Config()
@@ -56,7 +61,13 @@ if args.connect is not None:
     conf.insert_json5(zenoh.config.CONNECT_KEY, json.dumps(args.connect))
 if args.listen is not None:
     conf.insert_json5(zenoh.config.LISTEN_KEY, json.dumps(args.listen))
+if args.result is not None:
+    result_filepath = args.result
+
 key = args.key
+
+# define a list to store the received packet id and recieve time
+received_packet_list = []
 
 # Zenoh code  --- --- --- --- --- --- --- --- --- --- ---
 
@@ -72,22 +83,30 @@ print("Declaring Subscriber on '{}'...".format(key))
 
 
 def listener(sample: Sample):
-    print(f">> [Subscriber] Received {sample.kind} ('{sample.key_expr}': '{sample.payload.decode('utf-8')}')")
-    
+    received_time = int(time.time() * 1000)
+    received_packet_id = sample.payload.decode('utf-8')
+    received_packet_list.append({"packet_id": received_packet_id, "received_time": received_time})
+    print(f"received packet id: {sample.payload.decode('utf-8')}")
 
 # WARNING, you MUST store the return value in order for the subscription to work!!
 # This is because if you don't, the reference counter will reach 0 and the subscription
 # will be immediately undeclared.
+
+print("The subscribe is ready to receive data! You can press any key to stop the subscription")
 sub = session.declare_subscriber(key, listener, reliability=Reliability.RELIABLE())
 
-print("Enter 'q' to quit...")
-c = '\0'
-while c != 'q':
-    c = sys.stdin.read(1)
-    if c == '':
-        time.sleep(1)
+
+is_end = input()
+print("Ending subscription...")
 
 # Cleanup: note that even if you forget it, cleanup will happen automatically when 
 # the reference counter reaches 0
+
 sub.undeclare()
 session.close()
+# write the received packet list to a json file
+with open(result_filepath, 'w') as f:
+    json.dump(received_packet_list, f)
+
+print("Successfully write the received packet list to a json file")
+print("Bye!")
