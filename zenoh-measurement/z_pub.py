@@ -16,6 +16,7 @@ import sys
 import time
 import argparse
 import itertools
+from datetime import datetime
 import json
 import zenoh
 from zenoh import config
@@ -39,7 +40,7 @@ parser.add_argument('--listen', '-l', dest='listen',
                     type=str,
                     help='Endpoints to listen on.')
 parser.add_argument('--key', '-k', dest='key',
-                    default='demo/example/zenoh-python-pub',
+                    default='demo/example/test',
                     type=str,
                     help='The key expression to publish onto.')
 parser.add_argument('--value', '-v', dest='value',
@@ -52,7 +53,12 @@ parser.add_argument('--config', '-c', dest='config',
                     metavar='FILE',
                     type=str,
                     help='A configuration file.')
+parser.add_argument('--result', '-r', dest='result',
+                    metavar='FILE',
+                    type=str,
+                    help="A file to write the published data to.")
 
+result_filepath = "sent-data/run1.json"
 args = parser.parse_args()
 conf = zenoh.Config.from_file(args.config) if args.config is not None else zenoh.Config()
 if args.mode is not None:
@@ -61,8 +67,11 @@ if args.connect is not None:
     conf.insert_json5(zenoh.config.CONNECT_KEY, json.dumps(args.connect))
 if args.listen is not None:
     conf.insert_json5(zenoh.config.LISTEN_KEY, json.dumps(args.listen))
+if args.result is not None:
+    result_filepath = args.result
 key = args.key
 value = args.value
+sent_packet_info_list = []
 
 # initiate logging
 zenoh.init_logger()
@@ -73,11 +82,19 @@ session = zenoh.open(conf)
 print(f"Declaring Publisher on '{key}'...")
 pub = session.declare_publisher(key)
 
+start_time = int(time.time() * 1000)
 for idx in itertools.count() if args.iter is None else range(args.iter):
-    time.sleep(1)
-    buf = f"[{idx:4d}] {value}"
-    print(f"Putting Data ('{key}': '{buf}')...")
-    pub.put(buf)
-
+    time.sleep(0.1)
+    print(f"The sent packet id: {idx}")
+    sent_time = int(time.time() * 1000)
+    sent_packet_info_list.append({"packet_id": idx, "sent_time": sent_time})
+    pub.put(f"{idx}")
 pub.undeclare()
 session.close()
+# convert packet info list to json and store to result_filepath
+data = {"start_time": start_time, "sent_packet_list": sent_packet_info_list}
+with open(result_filepath, "w+") as f:
+    json.dump(data, f)
+
+print("Successfully write the sent packet list to a json file")
+print("Bye!")
