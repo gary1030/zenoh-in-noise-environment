@@ -51,7 +51,7 @@ parser.add_argument('--result', '-r', dest='result',
                     type=str,
                     help='A file to write the subscription result to.')
 
-result_filepath = "received-data/result.json"
+result_filepath = "received-data/run1.json"
 args = parser.parse_args()
 conf = zenoh.Config.from_file(
     args.config) if args.config is not None else zenoh.Config()
@@ -93,6 +93,7 @@ def listener(sample: Sample):
 # will be immediately undeclared.
 
 print("The subscribe is ready to receive data! You can press any key to stop the subscription")
+start_time = int(time.time() * 1000)
 sub = session.declare_subscriber(key, listener, reliability=Reliability.RELIABLE())
 
 
@@ -104,9 +105,11 @@ print("Ending subscription...")
 
 sub.undeclare()
 session.close()
-# write the received packet list to a json file
+
+# write the start time and received packet list to a json file
+data = {"start_time": start_time, "received_packet_list": received_packet_list}
 with open(result_filepath, 'w') as f:
-    json.dump(received_packet_list, f)
+    json.dump(data, f)
 
 print("Successfully write the received packet list to a json file")
 print("Bye!")
