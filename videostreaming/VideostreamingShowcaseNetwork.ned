@@ -29,8 +29,7 @@ network VideoStreamingShowcase
             parameters:
                 @display("p=300,300");
         }
-        // switch2: AccessPoint {
-	switch2: EthernetSwitch {
+        switch2: AccessPoint {
             parameters:
                 @display("p=700,300");
         }
@@ -42,19 +41,18 @@ network VideoStreamingShowcase
             parameters:
                 @display("p=100,300");
         }
-        // host2: WirelessHost {
-	host2: StandardHost {
+        host2: WirelessHost {
             parameters:
                 @display("p=900,300");
         }
-        host3: AdhocHost {
-        	parameters:
-        		@display("p=300,200");
-        }
-        host4: AdhocHost {
-        	parameters:
-        		@display("p=500,200");
-        }
+        //host3: AdhocHost {
+        //	parameters:
+        //		@display("p=300,200");
+        //}
+        //host4: AdhocHost {
+        //	parameters:
+        //		@display("p=500,200");
+        //}
         radioMedium: Ieee80211ScalarRadioMedium {
             @display("p=400,100");
         }
@@ -63,5 +61,5 @@ network VideoStreamingShowcase
         host1.ethg++ <--> Eth10M <--> switch1.ethg++;
         switch1.ethg++ <--> Eth10M <--> router.ethg++;
         router.ethg++ <--> Eth10M <--> switch2.ethg++;
-        switch2.ethg++ <--> Eth10M <--> host2.ethg++;
+        // switch2.ethg++ <--> Eth10M <--> host2.ethg++;
 }

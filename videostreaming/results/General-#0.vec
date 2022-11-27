@@ -1,8 +1,8 @@
 version 3
-run General-0-20221124-22:38:45-38514
+run General-0-20221125-15:39:28-44704
 attr configname General
-attr datetime 20221124-22:38:45
-attr datetimef 20221124-223845
+attr datetime 20221125-15:39:28
+attr datetimef 20221125-153928
 attr experiment General
 attr inifile omnetpp.ini
 attr iterationvars ""
@@ -10,7 +10,7 @@ attr iterationvarsd ""
 attr iterationvarsf ""
 attr measurement ""
 attr network VideoStreamingShowcase
-attr processid 38514
+attr processid 44704
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -20,17 +20,21 @@ config image-path /home/daedluz/Programs/omnet/workspace/inet/images
 config network VideoStreamingShowcase
 config scheduler-class inet::RealTimeScheduler
 config sim-time-limit 30s
+config **.mac.promiscuous true
 config **.crcMode "\"computed\""
 config **.fcsMode "\"computed\""
 config *.host1.eth[0].typename ExtUpperEthernetInterface
 config *.host1.eth[0].device "\"tapa\""
 config *.host1.eth[0].copyConfiguration "\"copyFromExt\""
-config *.host2.eth[0].typename ExtUpperEthernetInterface
-config *.host2.eth[0].device "\"tapb\""
-config *.host2.eth[0].copyConfiguration "\"copyFromExt\""
 config *.host2.numPcapRecorders 1
 config *.host2.pcapRecorder[*].pcapFile "\"results/host2.pcap\""
-config *.configurator.config "xml(\"<config>                                 <interface hosts='router' names='eth0' address='192.168.2.99' netmask='255.255.255.0'/>                                 <interface hosts='router' names='eth1' address='192.168.3.99' netmask='255.255.255.0'/>                              </config>\")"
+config *.host2.wlan[*].mgmt.typename Ieee80211MgmtSta
+config *.host2.wlan[*].agent.defaultSsid "\"area1\""
+config *.host2.wlan[*].agent.typename Ieee80211AgentSta
+config *.host2.wlan[0].typename ExtUpperIeee80211Interface
+config *.host2.wlan[0].device "\"tapb\""
+config *.host2.wlan[0].mac.useAck false
+config *.configurator.config "xml(\"<config>                                 <interface hosts='router' names='eth0' address='192.168.2.99' netmask='255.255.255.0'/>                                 <interface hosts='router' names='eth1' address='192.168.3.99' netmask='255.255.255.0'/> \t\t\t\t<interface hosts='host2' names='wlan0' address='192.168.3.20'/>                             </config>\")"
 config *.router.ipv4.natTable.config "xml(\"<config>                                         <entry type='prerouting'                                         packetDataFilter='*Ipv4Header and destAddress=~192.168.2.99'                                         srcAddress='192.168.3.99' destAddress='192.168.3.20'/>                                         <entry type='prerouting'                                         packetDataFilter='*Ipv4Header and destAddress=~192.168.3.99'                                         srcAddress='192.168.2.99' destAddress='192.168.2.20'/>                                      </config>\")"
 config *.radioMedium.backgroundNoise.typename IsotropicScalarBackgroundNoise
 config *.radioMedium.backgroundNoise.power "-110 dBm"
@@ -38,6 +42,8 @@ config *.visualizer.*.interfaceTableVisualizer.displayInterfaceTables true
 config *.visualizer.*.interfaceTableVisualizer.nodeFilter "\"not name=~switch*\""
 config **.duplexMode true
 config **.eth*.bitrate 10Mbps
+config *.switch2.wlan[*].mgmt.typename Ieee80211MgmtAp
+config *.switch2.wlan[*].mgmt.ssid "\"area1\""
 
 vector 0 VideoStreamingShowcase.switch1.eth[0].mac.queue queueLength:vector ETV
 attr autoWarmupFilter false
@@ -53,1884 +59,1133 @@ attr recordingmode vector
 attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
 attr title "queue length"
 attr type int
-vector 2 VideoStreamingShowcase.switch2.eth[0].mac.queue queueLength:vector ETV
-attr autoWarmupFilter false
-attr interpolationmode sample-hold
-attr recordingmode vector
-attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
-attr title "queue length"
-attr type int
-vector 3 VideoStreamingShowcase.switch2.eth[1].mac.queue queueLength:vector ETV
-attr autoWarmupFilter false
-attr interpolationmode sample-hold
-attr recordingmode vector
-attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
-attr title "queue length"
-attr type int
-vector 4 VideoStreamingShowcase.router.eth[0].mac.queue queueLength:vector ETV
-attr autoWarmupFilter false
-attr interpolationmode sample-hold
-attr recordingmode vector
-attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
-attr title "queue length"
-attr type int
-vector 5 VideoStreamingShowcase.router.eth[1].mac.queue queueLength:vector ETV
-attr autoWarmupFilter false
-attr interpolationmode sample-hold
-attr recordingmode vector
-attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
-attr title "queue length"
-attr type int
-vector 6 VideoStreamingShowcase.host1.eth[0].mac.queue queueLength:vector ETV
-attr autoWarmupFilter false
-attr interpolationmode sample-hold
-attr recordingmode vector
-attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
-attr title "queue length"
-attr type int
-vector 7 VideoStreamingShowcase.host1.udp passedUpPk:vector(count) ETV
-attr interpolationmode none
-attr recordingmode vector(count)
-attr source packetSentToUpper
-attr title "packets passed up, count"
-vector 8 VideoStreamingShowcase.host1.udp droppedPkWrongPort:vector(count) ETV
-attr interpolationmode none
-attr recordingmode vector(count)
-attr source packetDropReasonIsNoPortFound(packetDropped)
-attr title "packets dropped (wrong port), count"
-vector 9 VideoStreamingShowcase.host1.udp droppedPkBadChecksum:vector(count) ETV
-attr interpolationmode none
-attr recordingmode vector(count)
-attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
-attr title "packets dropped (checksum error), count"
-vector 10 VideoStreamingShowcase.host2.eth[0].mac.queue queueLength:vector ETV
-attr autoWarmupFilter false
-attr interpolationmode sample-hold
-attr recordingmode vector
-attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
-attr title "queue length"
-attr type int
-vector 11 VideoStreamingShowcase.host2.udp passedUpPk:vector(count) ETV
-attr interpolationmode none
-attr recordingmode vector(count)
-attr source packetSentToUpper
-attr title "packets passed up, count"
-vector 12 VideoStreamingShowcase.host2.udp droppedPkWrongPort:vector(count) ETV
-attr interpolationmode none
-attr recordingmode vector(count)
-attr source packetDropReasonIsNoPortFound(packetDropped)
-attr title "packets dropped (wrong port), count"
-vector 13 VideoStreamingShowcase.host2.udp droppedPkBadChecksum:vector(count) ETV
-attr interpolationmode none
-attr recordingmode vector(count)
-attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
-attr title "packets dropped (checksum error), count"
-vector 14 VideoStreamingShowcase.host3.wlan[0].mac.dcf frameSequenceActive:vector ETV
+vector 2 VideoStreamingShowcase.switch2.wlan[0].mac.dcf frameSequenceActive:vector ETV
 attr autoWarmupFilter false
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr source warmup(count(frameSequenceStarted)-count(frameSequenceFinished))
 attr title "frame sequence active"
-vector 15 VideoStreamingShowcase.host3.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:vector ETV
+vector 3 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:vector ETV
 attr autoWarmupFilter false
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
 attr title "queue length"
 attr type int
-vector 16 VideoStreamingShowcase.host3.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:vector ETV
+vector 4 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:vector ETV
 attr autoWarmupFilter false
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr source "warmup(count(packetEnqueued) - count(packetDequeued))"
 attr title "queue length"
-vector 17 VideoStreamingShowcase.host3.wlan[0].mac.dcf.channelAccess.contention backoffActive:vector ETV
+vector 5 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.contention backoffActive:vector ETV
 attr autoWarmupFilter false
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr source warmup(count(backoffStarted)-count(backoffStopped))
 attr title "backoff active"
-vector 18 VideoStreamingShowcase.host3.udp passedUpPk:vector(count) ETV
+vector 6 VideoStreamingShowcase.switch2.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length"
+attr type int
+vector 7 VideoStreamingShowcase.router.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length"
+attr type int
+vector 8 VideoStreamingShowcase.router.eth[1].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length"
+attr type int
+vector 9 VideoStreamingShowcase.host1.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length"
+attr type int
+vector 10 VideoStreamingShowcase.host1.udp passedUpPk:vector(count) ETV
 attr interpolationmode none
 attr recordingmode vector(count)
 attr source packetSentToUpper
 attr title "packets passed up, count"
-vector 19 VideoStreamingShowcase.host3.udp droppedPkWrongPort:vector(count) ETV
+vector 11 VideoStreamingShowcase.host1.udp droppedPkWrongPort:vector(count) ETV
 attr interpolationmode none
 attr recordingmode vector(count)
 attr source packetDropReasonIsNoPortFound(packetDropped)
 attr title "packets dropped (wrong port), count"
-vector 20 VideoStreamingShowcase.host3.udp droppedPkBadChecksum:vector(count) ETV
+vector 12 VideoStreamingShowcase.host1.udp droppedPkBadChecksum:vector(count) ETV
 attr interpolationmode none
 attr recordingmode vector(count)
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
 attr title "packets dropped (checksum error), count"
-vector 21 VideoStreamingShowcase.host4.wlan[0].mac.dcf frameSequenceActive:vector ETV
+vector 13 VideoStreamingShowcase.host2.wlan[0].mac.dcf frameSequenceActive:vector ETV
 attr autoWarmupFilter false
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr source warmup(count(frameSequenceStarted)-count(frameSequenceFinished))
 attr title "frame sequence active"
-vector 22 VideoStreamingShowcase.host4.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:vector ETV
+vector 14 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:vector ETV
 attr autoWarmupFilter false
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
 attr title "queue length"
 attr type int
-vector 23 VideoStreamingShowcase.host4.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:vector ETV
+vector 15 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:vector ETV
 attr autoWarmupFilter false
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr source "warmup(count(packetEnqueued) - count(packetDequeued))"
 attr title "queue length"
-vector 24 VideoStreamingShowcase.host4.wlan[0].mac.dcf.channelAccess.contention backoffActive:vector ETV
+vector 16 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.contention backoffActive:vector ETV
 attr autoWarmupFilter false
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr source warmup(count(backoffStarted)-count(backoffStopped))
 attr title "backoff active"
-vector 25 VideoStreamingShowcase.host4.udp passedUpPk:vector(count) ETV
+vector 17 VideoStreamingShowcase.host2.udp passedUpPk:vector(count) ETV
 attr interpolationmode none
 attr recordingmode vector(count)
 attr source packetSentToUpper
 attr title "packets passed up, count"
-vector 26 VideoStreamingShowcase.host4.udp droppedPkWrongPort:vector(count) ETV
+vector 18 VideoStreamingShowcase.host2.udp droppedPkWrongPort:vector(count) ETV
 attr interpolationmode none
 attr recordingmode vector(count)
 attr source packetDropReasonIsNoPortFound(packetDropped)
 attr title "packets dropped (wrong port), count"
-vector 27 VideoStreamingShowcase.host4.udp droppedPkBadChecksum:vector(count) ETV
+vector 19 VideoStreamingShowcase.host2.udp droppedPkBadChecksum:vector(count) ETV
 attr interpolationmode none
 attr recordingmode vector(count)
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
 attr title "packets dropped (checksum error), count"
-vector 28 VideoStreamingShowcase.host3.wlan[0].radio radioMode:vector ETV
+vector 20 VideoStreamingShowcase.switch2.wlan[0].radio radioMode:vector ETV
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr source radioModeChanged
 attr title "Radio mode"
-vector 29 VideoStreamingShowcase.host3.wlan[0].radio radioChannel:vector ETV
+vector 21 VideoStreamingShowcase.switch2.wlan[0].radio radioChannel:vector ETV
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr source radioChannelChanged
 attr title "Radio channel"
-vector 30 VideoStreamingShowcase.host4.wlan[0].radio radioMode:vector ETV
+vector 22 VideoStreamingShowcase.host2.wlan[0].radio radioMode:vector ETV
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr source radioModeChanged
 attr title "Radio mode"
-vector 31 VideoStreamingShowcase.host4.wlan[0].radio radioChannel:vector ETV
+vector 23 VideoStreamingShowcase.host2.wlan[0].radio radioChannel:vector ETV
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr source radioChannelChanged
 attr title "Radio channel"
-vector 32 VideoStreamingShowcase.host3.wlan[0].radio receptionState:vector ETV
+vector 24 VideoStreamingShowcase.switch2.wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr source receptionStateChanged
 attr title "Radio reception state"
-vector 33 VideoStreamingShowcase.host3.wlan[0].mac.dcf.channelAccess.contention stateChanged:vector ETV
+vector 25 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.contention stateChanged:vector ETV
 attr enum IDLE,DEFER,IFS_AND_BACKOFF
 attr interpolationmode none
 attr recordingmode vector
 attr title "contention state changed"
 attr type enum
-vector 34 VideoStreamingShowcase.host4.wlan[0].radio receptionState:vector ETV
+vector 26 VideoStreamingShowcase.host2.wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr source receptionStateChanged
 attr title "Radio reception state"
-vector 35 VideoStreamingShowcase.host4.wlan[0].mac.dcf.channelAccess.contention stateChanged:vector ETV
+vector 27 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.contention stateChanged:vector ETV
 attr enum IDLE,DEFER,IFS_AND_BACKOFF
 attr interpolationmode none
 attr recordingmode vector
 attr title "contention state changed"
 attr type enum
-vector 36 VideoStreamingShowcase.host3.wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
+vector 28 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr title "contention window"
-vector 37 VideoStreamingShowcase.host4.wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
+vector 29 VideoStreamingShowcase.host2.wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr title "contention window"
-vector 38 VideoStreamingShowcase.host1.eth[0].tap packetReceived:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetReceived
-attr title "packets received, packetBytes"
-vector 39 VideoStreamingShowcase.host1.eth[0].tap packetSentFromLower:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToLower
-attr title "packets sent to higher layer, packetBytes"
-vector 40 VideoStreamingShowcase.host2.eth[0].tap packetReceived:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetReceived
-attr title "packets received, packetBytes"
-vector 41 VideoStreamingShowcase.host2.eth[0].tap packetSentFromLower:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToLower
-attr title "packets sent to higher layer, packetBytes"
-vector 42 VideoStreamingShowcase.host1.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetReceivedFromUpper
-attr title "packet bytes from higher layer, packetBytes"
-vector 43 VideoStreamingShowcase.host1.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+vector 30 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:vector(packetBytes) ETV
 attr interpolationmode none
 attr recordingmode vector(packetBytes)
 attr title "packet pushed, packetBytes"
-vector 44 VideoStreamingShowcase.host1.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+vector 31 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.contention backoffPeriodGenerated:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "backoff periods"
+vector 32 VideoStreamingShowcase.host2.wlan[0].agent sentRequest:vector ETV
+attr recordingmode vector
+attr title "sent requests"
+vector 33 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.pendingQueue packetPulled:vector(packetBytes) ETV
 attr interpolationmode none
 attr recordingmode vector(packetBytes)
 attr title "packet pulled, packetBytes"
-vector 45 VideoStreamingShowcase.host1.eth[0].mac.queue queueingTime:vector ETV
+vector 34 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:vector ETV
 attr interpolationmode none
 attr recordingmode vector
 attr source queueingTime(packetPulled)
 attr title "queueing times"
 attr unit s
-vector 46 VideoStreamingShowcase.host2.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetReceivedFromUpper
-attr title "packet bytes from higher layer, packetBytes"
-vector 47 VideoStreamingShowcase.host2.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr title "packet pushed, packetBytes"
-vector 48 VideoStreamingShowcase.host2.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr title "packet pulled, packetBytes"
-vector 49 VideoStreamingShowcase.host2.eth[0].mac.queue queueingTime:vector ETV
+vector 35 VideoStreamingShowcase.switch2.wlan[0].mac.dcf datarateSelected:vector ETV
 attr interpolationmode none
 attr recordingmode vector
-attr source queueingTime(packetPulled)
-attr title "queueing times"
-attr unit s
-vector 50 VideoStreamingShowcase.host1.eth[0].mac txPk:vector(packetBytes) ETV
+attr title "datarates selected"
+vector 36 VideoStreamingShowcase.switch2.wlan[0].mac packetSentToLower:vector(packetBytes) ETV
 attr interpolationmode none
 attr recordingmode vector(packetBytes)
-attr source packetSentToLower
-attr title "packets transmitted, packetBytes"
-vector 51 VideoStreamingShowcase.host2.eth[0].mac txPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToLower
-attr title "packets transmitted, packetBytes"
-vector 52 VideoStreamingShowcase.switch1.eth[0].mac rxPkOk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source rxPkOk
-attr title "packets received OK, packetBytes"
-vector 53 VideoStreamingShowcase.switch1.eth[0].mac passedUpPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToUpper
-attr title "packets passed to higher layer, packetBytes"
-vector 54 VideoStreamingShowcase.switch2.eth[1].mac rxPkOk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source rxPkOk
-attr title "packets received OK, packetBytes"
-vector 55 VideoStreamingShowcase.switch2.eth[1].mac passedUpPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToUpper
-attr title "packets passed to higher layer, packetBytes"
-vector 56 VideoStreamingShowcase.switch1.eth[1].mac packetReceivedFromUpper:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetReceivedFromUpper
-attr title "packet bytes from higher layer, packetBytes"
-vector 57 VideoStreamingShowcase.switch1.eth[1].mac.queue packetPushed:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr title "packet pushed, packetBytes"
-vector 58 VideoStreamingShowcase.switch1.eth[1].mac.queue packetPulled:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr title "packet pulled, packetBytes"
-vector 59 VideoStreamingShowcase.switch1.eth[1].mac.queue queueingTime:vector ETV
-attr interpolationmode none
+attr title "packets sent to lower layer, packetBytes"
+vector 37 VideoStreamingShowcase.switch2.wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
 attr recordingmode vector
-attr source queueingTime(packetPulled)
-attr title "queueing times"
-attr unit s
-vector 60 VideoStreamingShowcase.switch2.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr source transmissionStateChanged
+attr title "Radio transmission state"
+vector 38 VideoStreamingShowcase.switch2.wlan[0].mac.dcf packetSentToPeer:vector(packetBytes) ETV
 attr interpolationmode none
 attr recordingmode vector(packetBytes)
-attr source packetReceivedFromUpper
-attr title "packet bytes from higher layer, packetBytes"
-vector 61 VideoStreamingShowcase.switch2.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr title "packet pushed, packetBytes"
-vector 62 VideoStreamingShowcase.switch2.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr title "packet pulled, packetBytes"
-vector 63 VideoStreamingShowcase.switch2.eth[0].mac.queue queueingTime:vector ETV
-attr interpolationmode none
-attr recordingmode vector
-attr source queueingTime(packetPulled)
-attr title "queueing times"
-attr unit s
-vector 64 VideoStreamingShowcase.switch1.eth[1].mac txPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToLower
-attr title "packets transmitted, packetBytes"
-vector 65 VideoStreamingShowcase.switch2.eth[0].mac txPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToLower
-attr title "packets transmitted, packetBytes"
-vector 66 VideoStreamingShowcase.router.eth[0].mac rxPkOk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source rxPkOk
-attr title "packets received OK, packetBytes"
-vector 67 VideoStreamingShowcase.router.eth[0].mac passedUpPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToUpper
-attr title "packets passed to higher layer, packetBytes"
-vector 68 VideoStreamingShowcase.router.eth[1].mac rxPkOk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source rxPkOk
-attr title "packets received OK, packetBytes"
-vector 69 VideoStreamingShowcase.router.eth[1].mac passedUpPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToUpper
-attr title "packets passed to higher layer, packetBytes"
-vector 70 VideoStreamingShowcase.router.eth[1].encap decapPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source decapPk
-attr title "packets decapsulated, packetBytes"
-vector 71 VideoStreamingShowcase.router.ipv4.arp arpReplySent:vector(packetBytes) ETV
-attr recordingmode vector(packetBytes)
-attr source arpReplySent
-attr title "ARP replies sent, packetBytes"
-vector 72 VideoStreamingShowcase.router.eth[1].encap encapPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source encapPk
-attr title "packets encapsulated, packetBytes"
-vector 73 VideoStreamingShowcase.router.eth[1].mac packetReceivedFromUpper:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetReceivedFromUpper
-attr title "packet bytes from higher layer, packetBytes"
-vector 74 VideoStreamingShowcase.router.eth[1].mac.queue packetPushed:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr title "packet pushed, packetBytes"
-vector 75 VideoStreamingShowcase.router.eth[1].mac.queue packetPulled:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr title "packet pulled, packetBytes"
-vector 76 VideoStreamingShowcase.router.eth[1].mac.queue queueingTime:vector ETV
-attr interpolationmode none
-attr recordingmode vector
-attr source queueingTime(packetPulled)
-attr title "queueing times"
-attr unit s
-vector 77 VideoStreamingShowcase.router.eth[1].mac txPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToLower
-attr title "packets transmitted, packetBytes"
-vector 78 VideoStreamingShowcase.switch2.eth[0].mac rxPkOk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source rxPkOk
-attr title "packets received OK, packetBytes"
-vector 79 VideoStreamingShowcase.switch2.eth[0].mac passedUpPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToUpper
-attr title "packets passed to higher layer, packetBytes"
-vector 80 VideoStreamingShowcase.switch2.eth[1].mac packetReceivedFromUpper:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetReceivedFromUpper
-attr title "packet bytes from higher layer, packetBytes"
-vector 81 VideoStreamingShowcase.switch2.eth[1].mac.queue packetPushed:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr title "packet pushed, packetBytes"
-vector 82 VideoStreamingShowcase.switch2.eth[1].mac.queue packetPulled:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr title "packet pulled, packetBytes"
-vector 83 VideoStreamingShowcase.switch2.eth[1].mac.queue queueingTime:vector ETV
-attr interpolationmode none
-attr recordingmode vector
-attr source queueingTime(packetPulled)
-attr title "queueing times"
-attr unit s
-vector 84 VideoStreamingShowcase.switch2.eth[1].mac txPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToLower
-attr title "packets transmitted, packetBytes"
-vector 85 VideoStreamingShowcase.host2.eth[0].mac rxPkOk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source rxPkOk
-attr title "packets received OK, packetBytes"
-vector 86 VideoStreamingShowcase.host2.eth[0].mac passedUpPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToUpper
-attr title "packets passed to higher layer, packetBytes"
-vector 87 VideoStreamingShowcase.host2.eth[0].tap packetReceivedFromLower:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetReceivedFromLower
-attr title "packets received from higher layer, packetBytes"
-vector 88 VideoStreamingShowcase.host2.eth[0].tap packetSent:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSent
 attr title "packets sent, packetBytes"
-vector 89 VideoStreamingShowcase.router.ipv4.arp arpRequestSent:vector(packetBytes) ETV
-attr recordingmode vector(packetBytes)
-attr source arpRequestSent
-attr title "ARP request sent, packetBytes"
-vector 90 VideoStreamingShowcase.router.eth[0].encap encapPk:vector(packetBytes) ETV
+vector 39 VideoStreamingShowcase.switch2.wlan[0].mac.dcf packetSentToPeerMulticast:vector(packetBytes) ETV
 attr interpolationmode none
 attr recordingmode vector(packetBytes)
-attr source encapPk
-attr title "packets encapsulated, packetBytes"
-vector 91 VideoStreamingShowcase.router.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr source ieee80211Multicast(packetSentToPeer)
+attr title "packets sent: multicast, packetBytes"
+vector 40 VideoStreamingShowcase.switch2.wlan[0].mac.dcf packetSentToPeerBroadcast:vector(packetBytes) ETV
 attr interpolationmode none
 attr recordingmode vector(packetBytes)
-attr source packetReceivedFromUpper
-attr title "packet bytes from higher layer, packetBytes"
-vector 92 VideoStreamingShowcase.router.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr source ieee80211Broadcast(packetSentToPeer)
+attr title "packets sent: broadcast , packetBytes"
+vector 41 VideoStreamingShowcase.switch2.wlan[0].mac.dcf packetSentToPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211NotRetry(packetSentToPeer)
+attr title "packets sent: without retry, packetBytes"
+vector 42 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetDequeued)
+attr title "queueing times"
+vector 43 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:vector(packetBytes) ETV
 attr interpolationmode none
 attr recordingmode vector(packetBytes)
 attr title "packet pushed, packetBytes"
-vector 93 VideoStreamingShowcase.router.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+vector 44 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.contention backoffPeriodGenerated:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "backoff periods"
+vector 45 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.pendingQueue packetPulled:vector(packetBytes) ETV
 attr interpolationmode none
 attr recordingmode vector(packetBytes)
 attr title "packet pulled, packetBytes"
-vector 94 VideoStreamingShowcase.router.eth[0].mac.queue queueingTime:vector ETV
+vector 46 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:vector ETV
 attr interpolationmode none
 attr recordingmode vector
 attr source queueingTime(packetPulled)
 attr title "queueing times"
 attr unit s
-vector 95 VideoStreamingShowcase.router.eth[0].mac txPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToLower
-attr title "packets transmitted, packetBytes"
-vector 96 VideoStreamingShowcase.switch1.eth[1].mac rxPkOk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source rxPkOk
-attr title "packets received OK, packetBytes"
-vector 97 VideoStreamingShowcase.switch1.eth[1].mac passedUpPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToUpper
-attr title "packets passed to higher layer, packetBytes"
-vector 98 VideoStreamingShowcase.switch1.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetReceivedFromUpper
-attr title "packet bytes from higher layer, packetBytes"
-vector 99 VideoStreamingShowcase.switch1.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr title "packet pushed, packetBytes"
-vector 100 VideoStreamingShowcase.switch1.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr title "packet pulled, packetBytes"
-vector 101 VideoStreamingShowcase.switch1.eth[0].mac.queue queueingTime:vector ETV
+vector 47 VideoStreamingShowcase.host2.wlan[0].mac.dcf datarateSelected:vector ETV
 attr interpolationmode none
 attr recordingmode vector
-attr source queueingTime(packetPulled)
-attr title "queueing times"
-attr unit s
-vector 102 VideoStreamingShowcase.switch1.eth[0].mac txPk:vector(packetBytes) ETV
+attr title "datarates selected"
+vector 48 VideoStreamingShowcase.host2.wlan[0].mac packetSentToLower:vector(packetBytes) ETV
 attr interpolationmode none
 attr recordingmode vector(packetBytes)
-attr source packetSentToLower
-attr title "packets transmitted, packetBytes"
-vector 103 VideoStreamingShowcase.host1.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr title "packets sent to lower layer, packetBytes"
+vector 49 VideoStreamingShowcase.host2.wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source transmissionStateChanged
+attr title "Radio transmission state"
+vector 50 VideoStreamingShowcase.host2.wlan[0].mac.dcf packetSentToPeer:vector(packetBytes) ETV
 attr interpolationmode none
 attr recordingmode vector(packetBytes)
-attr source rxPkOk
-attr title "packets received OK, packetBytes"
-vector 104 VideoStreamingShowcase.host1.eth[0].mac passedUpPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSentToUpper
-attr title "packets passed to higher layer, packetBytes"
-vector 105 VideoStreamingShowcase.host1.eth[0].tap packetReceivedFromLower:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetReceivedFromLower
-attr title "packets received from higher layer, packetBytes"
-vector 106 VideoStreamingShowcase.host1.eth[0].tap packetSent:vector(packetBytes) ETV
-attr interpolationmode none
-attr recordingmode vector(packetBytes)
-attr source packetSent
 attr title "packets sent, packetBytes"
-vector 107 VideoStreamingShowcase.router.eth[0].encap decapPk:vector(packetBytes) ETV
+vector 51 VideoStreamingShowcase.host2.wlan[0].mac.dcf packetSentToPeerMulticast:vector(packetBytes) ETV
 attr interpolationmode none
 attr recordingmode vector(packetBytes)
-attr source decapPk
-attr title "packets decapsulated, packetBytes"
+attr source ieee80211Multicast(packetSentToPeer)
+attr title "packets sent: multicast, packetBytes"
+vector 52 VideoStreamingShowcase.host2.wlan[0].mac.dcf packetSentToPeerBroadcast:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Broadcast(packetSentToPeer)
+attr title "packets sent: broadcast , packetBytes"
+vector 53 VideoStreamingShowcase.host2.wlan[0].mac.dcf packetSentToPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211NotRetry(packetSentToPeer)
+attr title "packets sent: without retry, packetBytes"
+vector 54 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetDequeued)
+attr title "queueing times"
+vector 55 VideoStreamingShowcase.host2.wlan[0].agent dropConfirm:vector ETV
+attr recordingmode vector
+attr title "dropped confirms"
+vector 56 VideoStreamingShowcase.host2.wlan[0].mac packetReceivedFromLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packets received from lower layer, packetBytes"
+vector 57 VideoStreamingShowcase.host2.wlan[0].mac.dcf packetReceivedFromPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packets received, packetBytes"
+vector 58 VideoStreamingShowcase.host2.wlan[0].mac.dcf packetReceivedFromPeerMulticast:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Multicast(packetReceivedFromPeer)
+attr title "packets received: multicast, packetBytes"
+vector 59 VideoStreamingShowcase.host2.wlan[0].mac.dcf packetReceivedFromPeerBroadcast:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Broadcast(packetReceivedFromPeer)
+attr title "packets received: broadcast, packetBytes"
+vector 60 VideoStreamingShowcase.host2.wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211NotRetry(packetReceivedFromPeer)
+attr title "packets received: without retry, packetBytes"
+vector 61 VideoStreamingShowcase.host2.wlan[0].agent acceptConfirm:vector ETV
+attr recordingmode vector
+attr title "accepted confirms"
+vector 62 VideoStreamingShowcase.host2.wlan[0].mac.dcf packetSentToPeerUnicast:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Unicast(packetSentToPeer)
+attr title "packets sent: unicast, packetBytes"
+vector 63 VideoStreamingShowcase.host2.wlan[0].mac.rx nav:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source navChanged
+attr title "network allocation vector"
+vector 64 VideoStreamingShowcase.host2.wlan[0].mac.dcf packetSentToPeerWithRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Retry(packetSentToPeer)
+attr title "packets sent: with retry, packetBytes"
+vector 65 VideoStreamingShowcase.switch2.wlan[0].mac packetReceivedFromLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packets received from lower layer, packetBytes"
+vector 66 VideoStreamingShowcase.switch2.wlan[0].mac.dcf packetReceivedFromPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packets received, packetBytes"
+vector 67 VideoStreamingShowcase.switch2.wlan[0].mac.dcf packetReceivedFromPeerUnicast:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Unicast(packetReceivedFromPeer)
+attr title "packets received: unicast, packetBytes"
+vector 68 VideoStreamingShowcase.switch2.wlan[0].mac.dcf packetReceivedFromPeerWithRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Retry(packetReceivedFromPeer)
+attr title "packets received: with retry, packetBytes"
 0	0	0	0
 0	0	0	0
 0	0	0	0
 0	0	0	0
-0	69	0.810819741	1
-0	69	0.810819741	0
-0	91	0.811366693	1
-0	91	0.811366693	0
-0	136	0.811988409	1
-0	136	0.811988409	0
-0	157	0.812530859	1
-0	157	0.812530859	0
-0	223	0.814719018	1
-0	223	0.814719018	0
-0	245	0.815480529	1
-0	245	0.815480529	0
-0	316	0.817026372	1
-0	316	0.817026372	0
-0	333	0.817200818	1
-0	333	0.817200818	0
-0	377	0.858223883	1
-0	377	0.858223883	0
-0	431	1.482625014	1
-0	431	1.482625014	0
-0	475	1.499138963	1
-0	475	1.499138963	0
-0	519	2.502957836	1
-0	519	2.502957836	0
-0	541	2.510189908	1
-0	541	2.510189908	0
-0	585	3.317232149	1
-0	585	3.317232149	0
-0	651	3.508207617	1
-0	651	3.508207617	0
 1	0	0	0
 1	0	0	0
 1	0	0	0
 1	0	0	0
-1	9	0.010165175	1
-1	9	0.010165175	0
-1	25	0.650095068	1
-1	25	0.650095068	0
-1	79	0.811240193	1
-1	79	0.811240193	0
-1	101	0.811548234	1
-1	101	0.811548234	0
-1	167	0.812866673	1
-1	167	0.812866673	0
-1	189	0.81340174	1
-1	189	0.81340174	0
-1	255	0.816196894	1
-1	255	0.816196894	0
-1	277	0.816429422	1
-1	277	0.816429422	0
-1	343	0.817433925	1
-1	343	0.817433925	0
-1	397	1.482078783	1
-1	397	1.482078783	0
-1	441	1.498346268	1
-1	441	1.498346268	0
-1	485	2.502341948	1
-1	485	2.502341948	0
-1	551	2.510478572	1
-1	551	2.510478572	0
-1	595	3.357935575	1
-1	595	3.357935575	0
-1	617	3.507588667	1
-1	617	3.507588667	0
 2	0	0	0
 2	0	0	0
-2	0	0	0
-2	0	0	0
-2	10	0.010165175	1
-2	10	0.010165175	0
-2	35	0.810008798	1
-2	35	0.810008798	0
-2	57	0.810693241	1
-2	57	0.810693241	0
-2	123	0.811863509	1
-2	123	0.811863509	0
-2	145	0.812127559	1
-2	145	0.812127559	0
-2	211	0.814594118	1
-2	211	0.814594118	0
-2	233	0.815030829	1
-2	233	0.815030829	0
-2	295	0.816699872	1
-2	295	0.816699872	0
-2	312	0.817018318	1
-2	312	0.817018318	0
-2	365	0.858098983	1
-2	365	0.858098983	0
-2	387	0.873972047	1
-2	387	0.873972047	0
-2	419	1.482500114	1
-2	419	1.482500114	0
-2	463	1.499014063	1
-2	463	1.499014063	0
-2	507	2.502832936	1
-2	507	2.502832936	0
-2	529	2.510065008	1
-2	529	2.510065008	0
-2	573	3.317102449	1
-2	573	3.317102449	0
-2	639	3.508082717	1
-2	639	3.508082717	0
+2	8	0.163464953215	1
+2	14	0.184771173726	0
+2	18	0.185201840854	1
+2	23	0.194817840854	0
+2	36	0.284725173726	1
+2	44	0.284771840854	0
+2	53	0.413464953215	1
+2	59	0.484771173726	0
+2	63	0.485281840854	1
+2	68	0.494817840854	0
+2	80	0.584725173726	1
+2	88	0.684771173726	0
+2	98	0.685301840854	1
+2	106	0.685348507982	0
+2	116	0.834725173726	1
+2	122	0.884771173726	0
+2	126	0.885341840854	1
+2	131	0.894817840854	0
+2	145	0.984725173726	1
+2	156	0.984771173726	0
+2	221	1.084817840854	1
 3	0	0	0
 3	0	0	0
 3	0	0	0
 3	0	0	0
-3	47	0.810124098	1
-3	47	0.810124098	0
-3	113	0.811685934	1
-3	113	0.811685934	0
-3	179	0.812991573	1
-3	179	0.812991573	0
-3	201	0.81410264	1
-3	201	0.81410264	0
-3	268	0.816334594	1
-3	268	0.816334594	0
-3	290	0.816643922	1
-3	290	0.816643922	0
-3	355	0.817558825	1
-3	355	0.817558825	0
-3	409	1.482203683	1
-3	409	1.482203683	0
-3	453	1.498557568	1
-3	453	1.498557568	0
-3	497	2.502553248	1
-3	497	2.502553248	0
-3	563	2.510603472	1
-3	563	2.510603472	0
-3	607	3.358060475	1
-3	607	3.358060475	0
-3	629	3.507799967	1
-3	629	3.507799967	0
+3	2	0.163464953215	1
+3	8	0.163464953215	0
+3	12	0.184725840854	1
+3	18	0.185201840854	0
+3	30	0.284725173726	1
+3	36	0.284725173726	0
+3	50	0.413464953215	1
+3	53	0.413464953215	0
+3	57	0.484725840854	1
+3	63	0.485281840854	0
+3	76	0.584725173726	1
+3	80	0.584725173726	0
+3	85	0.684725173726	1
+3	98	0.685301840854	0
+3	113	0.834725173726	1
+3	116	0.834725173726	0
+3	120	0.884725840854	1
+3	126	0.885341840854	0
+3	138	0.984725173726	1
+3	145	0.984725173726	0
+3	211	1.084725840854	1
+3	219	1.084817840854	2
+3	221	1.084817840854	1
+3	221	1.084817840854	0
 4	0	0	0
 4	0	0	0
-4	0	0	0
-4	0	0	0
-4	64	0.810762091	1
-4	64	0.810762091	0
-4	86	0.811297843	1
-4	86	0.811297843	0
-4	131	0.811925959	1
-4	131	0.811925959	0
-4	152	0.812329209	1
-4	152	0.812329209	0
-4	218	0.814656568	1
-4	218	0.814656568	0
-4	240	0.815255679	1
-4	240	0.815255679	0
-4	306	0.816863122	1
-4	306	0.816863122	0
-4	324	0.817109568	1
-4	324	0.817109568	0
-4	372	0.858161433	1
-4	372	0.858161433	0
-4	426	1.482562564	1
-4	426	1.482562564	0
-4	470	1.499076513	1
-4	470	1.499076513	0
-4	514	2.502895386	1
-4	514	2.502895386	0
-4	536	2.510127458	1
-4	536	2.510127458	0
-4	580	3.317167299	1
-4	580	3.317167299	0
-4	646	3.508145167	1
-4	646	3.508145167	0
+4	8	0.163464953215	1
+4	14	0.184771173726	0
+4	18	0.185201840854	1
+4	23	0.194817840854	0
+4	36	0.284725173726	1
+4	44	0.284771840854	0
+4	53	0.413464953215	1
+4	59	0.484771173726	0
+4	63	0.485281840854	1
+4	68	0.494817840854	0
+4	80	0.584725173726	1
+4	88	0.684771173726	0
+4	98	0.685301840854	1
+4	106	0.685348507982	0
+4	116	0.834725173726	1
+4	122	0.884771173726	0
+4	126	0.885341840854	1
+4	131	0.894817840854	0
+4	145	0.984725173726	1
+4	156	0.984771173726	0
+4	221	1.084817840854	1
+4	221	1.084817840854	2
 5	0	0	0
 5	0	0	0
-5	0	0	0
-5	0	0	0
-5	42	0.810066448	1
-5	42	0.810066448	0
-5	108	0.811617084	1
-5	108	0.811617084	0
-5	174	0.812929123	1
-5	174	0.812929123	0
-5	196	0.81375219	1
-5	196	0.81375219	0
-5	262	0.816265744	1
-5	262	0.816265744	0
-5	285	0.816536672	1
-5	285	0.816536672	0
-5	350	0.817496375	1
-5	350	0.817496375	0
-5	404	1.482141233	1
-5	404	1.482141233	0
-5	448	1.498451918	1
-5	448	1.498451918	0
-5	492	2.502447598	1
-5	492	2.502447598	0
-5	558	2.510541022	1
-5	558	2.510541022	0
-5	602	3.357998025	1
-5	602	3.357998025	0
-5	624	3.507694317	1
-5	624	3.507694317	0
+5	2	0.163464953215	1
+5	7	0.163464953215	0
+5	15	0.184771840854	1
+5	17	0.185201840854	0
+5	30	0.284725173726	1
+5	32	0.284725173726	0
+5	50	0.413464953215	1
+5	52	0.413464953215	0
+5	60	0.484771840854	1
+5	62	0.485281840854	0
+5	76	0.584725173726	1
+5	79	0.584725173726	0
+5	89	0.684771840854	1
+5	97	0.685301840854	0
+5	113	0.834725173726	1
+5	115	0.834725173726	0
+5	123	0.884771840854	1
+5	125	0.885341840854	0
+5	138	0.984725173726	1
+5	143	0.984725173726	0
+5	211	1.084725840854	1
+5	212	1.084725840854	0
+5	215	1.084767840854	1
+5	220	1.084817840854	0
 6	0	0	0
 6	0	0	0
 6	0	0	0
 6	0	0	0
-6	1	0.010067525	1
-6	1	0.010067525	0
-6	21	0.649997418	1
-6	21	0.649997418	0
-6	75	0.811182543	1
-6	75	0.811182543	0
-6	97	0.811479384	1
-6	97	0.811479384	0
-6	163	0.812804223	1
-6	163	0.812804223	0
-6	181	0.81305129	1
-6	181	0.81305129	0
-6	251	0.816128044	1
-6	251	0.816128044	0
-6	264	0.816322172	1
-6	264	0.816322172	0
-6	339	0.817371475	1
-6	339	0.817371475	0
-6	393	1.482016333	1
-6	393	1.482016333	0
-6	437	1.498240618	1
-6	437	1.498240618	0
-6	481	2.502236298	1
-6	481	2.502236298	0
-6	547	2.510416122	1
-6	547	2.510416122	0
-6	591	3.357873125	1
-6	591	3.357873125	0
-6	613	3.507483017	1
-6	613	3.507483017	0
+7	0	0	0
+7	0	0	0
+7	0	0	0
 7	0	0	0
 8	0	0	0
+8	0	0	0
+8	0	0	0
+8	0	0	0
+9	0	0	0
+9	0	0	0
+9	0	0	0
 9	0	0	0
 10	0	0	0
-10	0	0	0
-10	0	0	0
-10	0	0	0
-10	2	0.010067525	1
-10	2	0.010067525	0
-10	31	0.809951148	1
-10	31	0.809951148	0
-10	53	0.810624391	1
-10	53	0.810624391	0
-10	119	0.811801059	1
-10	119	0.811801059	0
-10	126	0.811925909	1
-10	126	0.811925909	0
-10	207	0.814531668	1
-10	207	0.814531668	0
-10	229	0.814805979	1
-10	229	0.814805979	0
-10	280	0.816536622	1
-10	280	0.816536622	0
-10	308	0.816927068	1
-10	308	0.816927068	0
-10	361	0.858036533	1
-10	361	0.858036533	0
-10	383	0.873874397	1
-10	383	0.873874397	0
-10	415	1.482437664	1
-10	415	1.482437664	0
-10	459	1.498951613	1
-10	459	1.498951613	0
-10	503	2.502770486	1
-10	503	2.502770486	0
-10	525	2.510002558	1
-10	525	2.510002558	0
-10	569	3.317037599	1
-10	569	3.317037599	0
-10	635	3.508020267	1
-10	635	3.508020267	0
 11	0	0	0
 12	0	0	0
 13	0	0	0
+13	0	0	0
+13	33	0.284725173726	1
+13	41	0.284763173726	0
+13	94	0.684821840854	1
+13	103	0.685339840854	0
+13	148	0.984725173726	1
+13	160	0.984822840854	0
+13	162	0.985641840854	1
+13	171	0.994868840854	0
+13	173	0.996647840854	1
+13	182	1.004911507982	0
+13	184	1.008430507982	1
+13	193	1.01495417511	0
+13	195	1.01675317511	1
+13	204	1.024996842238	0
+13	207	1.042015842238	1
 14	0	0	0
 14	0	0	0
+14	0	0	0
+14	0	0	0
+14	28	0.284725173726	1
+14	33	0.284725173726	0
+14	86	0.684725840854	1
+14	94	0.684821840854	0
+14	141	0.984725173726	1
+14	148	0.984725173726	0
 15	0	0	0
 15	0	0	0
-15	0	0	0
-15	0	0	0
+15	33	0.284725173726	1
+15	41	0.284763173726	0
+15	94	0.684821840854	1
+15	103	0.685339840854	0
+15	148	0.984725173726	1
 16	0	0	0
 16	0	0	0
-17	0	0	0
+16	28	0.284725173726	1
+16	31	0.284725173726	0
+16	86	0.684725840854	1
+16	87	0.684725840854	0
+16	90	0.684771840854	1
+16	93	0.684821840854	0
+16	141	0.984725173726	1
+16	144	0.984725173726	0
+16	160	0.984822840854	1
+16	161	0.985641840854	0
+16	171	0.994868840854	1
+16	172	0.996647840854	0
+16	182	1.004911507982	1
+16	183	1.008430507982	0
+16	193	1.01495417511	1
+16	194	1.01675317511	0
+16	204	1.024996842238	1
+16	206	1.042015842238	0
 17	0	0	0
 18	0	0	0
 19	0	0	0
 20	0	0	0
+20	0	0	0
+20	0	0	2
+20	9	0.163464953215	3
+20	15	0.184771840854	2
+20	19	0.185201840854	3
+20	24	0.194818507982	2
+20	37	0.284725173726	3
+20	45	0.284772507982	2
+20	54	0.413464953215	3
+20	60	0.484771840854	2
+20	64	0.485281840854	3
+20	69	0.494818507982	2
+20	81	0.584725173726	3
+20	89	0.684771840854	2
+20	99	0.685301840854	3
+20	107	0.68534917511	2
+20	117	0.834725173726	3
+20	123	0.884771840854	2
+20	127	0.885341840854	3
+20	132	0.894818507982	2
+20	146	0.984725173726	3
+20	157	0.984771840854	2
+20	222	1.084817840854	3
 21	0	0	0
-21	0	0	0
 22	0	0	0
 22	0	0	0
-22	0	0	0
-22	0	0	0
+22	0	0	2
+22	34	0.284725173726	3
+22	42	0.284763840854	2
+22	95	0.684821840854	3
+22	104	0.685340507982	2
+22	149	0.984725173726	3
+22	154	0.984768507982	2
+22	163	0.985641840854	3
+22	168	0.994814507982	2
+22	174	0.996647840854	3
+22	179	1.00485717511	2
+22	185	1.008430507982	3
+22	190	1.014899842238	2
+22	196	1.01675317511	3
+22	201	1.024942509366	2
+22	208	1.042015842238	3
+22	214	1.084767840854	2
 23	0	0	0
-23	0	0	0
-24	0	0	0
-24	0	0	0
+23	6	0.163464953215	0
+23	78	0.584725173726	0
+23	142	0.984725173726	0
+24	0	0	1
+24	9	0.163464953215	0
+24	15	0.184771840854	1
+24	19	0.185201840854	0
+24	24	0.194818507982	1
+24	37	0.284725173726	0
+24	45	0.284772507982	1
+24	54	0.413464953215	0
+24	60	0.484771840854	1
+24	64	0.485281840854	0
+24	69	0.494818507982	1
+24	81	0.584725173726	0
+24	89	0.684771840854	1
+24	99	0.685301840854	0
+24	107	0.68534917511	1
+24	117	0.834725173726	0
+24	123	0.884771840854	1
+24	127	0.885341840854	0
+24	132	0.894818507982	1
+24	146	0.984725173726	0
+24	157	0.984771840854	1
+24	166	0.994813840854	2
+24	169	0.994814507982	1
+24	177	1.004856507982	2
+24	180	1.00485717511	1
+24	188	1.01489917511	2
+24	191	1.014899842238	1
+24	199	1.024941842238	2
+24	202	1.024942509366	1
+24	212	1.084725840854	3
+24	215	1.084767840854	1
+24	222	1.084817840854	0
 25	0	0	0
-26	0	0	0
+25	0	0	0
+25	2	0.163464953215	0
+25	2	0.163464953215	2
+25	7	0.163464953215	2
+25	7	0.163464953215	0
+25	9	0.163464953215	0
+25	9	0.163464953215	0
+25	14	0.184771173726	0
+25	14	0.184771173726	1
+25	15	0.184771840854	1
+25	15	0.184771840854	2
+25	17	0.185201840854	2
+25	17	0.185201840854	0
+25	19	0.185201840854	0
+25	19	0.185201840854	0
+25	24	0.194818507982	0
+25	24	0.194818507982	0
+25	30	0.284725173726	0
+25	30	0.284725173726	2
+25	32	0.284725173726	2
+25	32	0.284725173726	0
+25	37	0.284725173726	0
+25	37	0.284725173726	0
+25	45	0.284772507982	0
+25	45	0.284772507982	0
+25	50	0.413464953215	0
+25	50	0.413464953215	2
+25	52	0.413464953215	2
+25	52	0.413464953215	0
+25	54	0.413464953215	0
+25	54	0.413464953215	0
+25	59	0.484771173726	0
+25	59	0.484771173726	1
+25	60	0.484771840854	1
+25	60	0.484771840854	2
+25	62	0.485281840854	2
+25	62	0.485281840854	0
+25	64	0.485281840854	0
+25	64	0.485281840854	0
+25	69	0.494818507982	0
+25	69	0.494818507982	0
+25	76	0.584725173726	0
+25	76	0.584725173726	2
+25	79	0.584725173726	2
+25	79	0.584725173726	0
+25	81	0.584725173726	0
+25	81	0.584725173726	0
+25	88	0.684771173726	0
+25	88	0.684771173726	1
+25	89	0.684771840854	1
+25	89	0.684771840854	2
+25	97	0.685301840854	2
+25	97	0.685301840854	0
+25	99	0.685301840854	0
+25	99	0.685301840854	0
+25	107	0.68534917511	0
+25	107	0.68534917511	0
+25	113	0.834725173726	0
+25	113	0.834725173726	2
+25	115	0.834725173726	2
+25	115	0.834725173726	0
+25	117	0.834725173726	0
+25	117	0.834725173726	0
+25	122	0.884771173726	0
+25	122	0.884771173726	1
+25	123	0.884771840854	1
+25	123	0.884771840854	2
+25	125	0.885341840854	2
+25	125	0.885341840854	0
+25	127	0.885341840854	0
+25	127	0.885341840854	0
+25	132	0.894818507982	0
+25	132	0.894818507982	0
+25	138	0.984725173726	0
+25	138	0.984725173726	2
+25	143	0.984725173726	2
+25	143	0.984725173726	0
+25	146	0.984725173726	0
+25	146	0.984725173726	0
+25	157	0.984771840854	0
+25	157	0.984771840854	0
+25	166	0.994813840854	0
+25	166	0.994813840854	0
+25	169	0.994814507982	0
+25	169	0.994814507982	0
+25	177	1.004856507982	0
+25	177	1.004856507982	0
+25	180	1.00485717511	0
+25	180	1.00485717511	0
+25	188	1.01489917511	0
+25	188	1.01489917511	0
+25	191	1.014899842238	0
+25	191	1.014899842238	0
+25	199	1.024941842238	0
+25	199	1.024941842238	0
+25	202	1.024942509366	0
+25	202	1.024942509366	0
+25	211	1.084725840854	0
+25	211	1.084725840854	2
+25	212	1.084725840854	2
+25	212	1.084725840854	1
+25	215	1.084767840854	1
+25	215	1.084767840854	2
+25	220	1.084817840854	2
+25	220	1.084817840854	0
+25	222	1.084817840854	0
+25	222	1.084817840854	0
+26	0	0	1
+26	13	0.184771173726	2
+26	16	0.184771840854	1
+26	22	0.194817840854	2
+26	25	0.194818507982	1
+26	34	0.284725173726	0
+26	42	0.284763840854	2
+26	46	0.284772507982	1
+26	58	0.484771173726	2
+26	61	0.484771840854	1
+26	67	0.494817840854	2
+26	70	0.494818507982	1
+26	87	0.684725840854	3
+26	90	0.684771840854	1
+26	95	0.684821840854	0
+26	104	0.685340507982	2
+26	108	0.68534917511	1
+26	121	0.884771173726	2
+26	124	0.884771840854	1
+26	130	0.894817840854	2
+26	133	0.894818507982	1
+26	149	0.984725173726	0
+26	154	0.984768507982	2
+26	158	0.984771840854	1
+26	163	0.985641840854	0
+26	168	0.994814507982	1
+26	174	0.996647840854	0
+26	179	1.00485717511	1
+26	185	1.008430507982	0
+26	190	1.014899842238	1
+26	196	1.01675317511	0
+26	201	1.024942509366	1
+26	208	1.042015842238	0
+26	214	1.084767840854	1
 27	0	0	0
-28	0	0	0
-28	0	0	0
-28	0	0	2
-29	0	0	0
-30	0	0	0
-30	0	0	0
-30	0	0	2
-31	0	0	0
-32	0	0	1
-33	0	0	0
-33	0	0	0
-34	0	0	1
-35	0	0	0
-35	0	0	0
-36	0	0	31
-37	0	0	31
-38	0	0.010067525	114
-38	20	0.649997418	114
-38	74	0.811182543	46
-38	96	0.811479384	78
-38	162	0.812804223	70
-38	180	0.81305129	430
-38	250	0.816128044	78
-38	263	0.816322172	126
-38	338	0.817371475	70
-38	392	1.482016333	70
-38	436	1.498240618	124
-38	480	2.502236298	124
-38	546	2.510416122	70
-38	590	3.357873125	70
-38	612	3.507483017	124
-39	0	0.010067525	114
-39	20	0.649997418	114
-39	74	0.811182543	46
-39	96	0.811479384	78
-39	162	0.812804223	70
-39	180	0.81305129	430
-39	250	0.816128044	78
-39	263	0.816322172	126
-39	338	0.817371475	70
-39	392	1.482016333	70
-39	436	1.498240618	124
-39	480	2.502236298	124
-39	546	2.510416122	70
-39	590	3.357873125	70
-39	612	3.507483017	124
-40	0	0.010067525	114
-40	30	0.809951148	46
-40	52	0.810624391	78
-40	118	0.811801059	70
-40	124	0.811925909	244
-40	206	0.814531668	70
-40	228	0.814805979	273
-40	278	0.816536622	196
-40	307	0.816927068	106
-40	360	0.858036533	70
-40	382	0.873874397	114
-40	414	1.482437664	70
-40	458	1.498951613	70
-40	502	2.502770486	70
-40	524	2.510002558	70
-40	568	3.317037599	73
-40	634	3.508020267	70
-41	0	0.010067525	114
-41	30	0.809951148	46
-41	52	0.810624391	78
-41	118	0.811801059	70
-41	124	0.811925909	244
-41	206	0.814531668	70
-41	228	0.814805979	273
-41	278	0.816536622	196
-41	307	0.816927068	106
-41	360	0.858036533	70
-41	382	0.873874397	114
-41	414	1.482437664	70
-41	458	1.498951613	70
-41	502	2.502770486	70
-41	524	2.510002558	70
-41	568	3.317037599	73
-41	634	3.508020267	70
-42	1	0.010067525	114
-42	21	0.649997418	114
-42	75	0.811182543	46
-42	97	0.811479384	78
-42	163	0.812804223	70
-42	181	0.81305129	430
-42	251	0.816128044	78
-42	264	0.816322172	126
-42	339	0.817371475	70
-42	393	1.482016333	70
-42	437	1.498240618	124
-42	481	2.502236298	124
-42	547	2.510416122	70
-42	591	3.357873125	70
-42	613	3.507483017	124
-43	1	0.010067525	114
-43	21	0.649997418	114
-43	75	0.811182543	46
-43	97	0.811479384	78
-43	163	0.812804223	70
-43	181	0.81305129	430
-43	251	0.816128044	78
-43	264	0.816322172	126
-43	339	0.817371475	70
-43	393	1.482016333	70
-43	437	1.498240618	124
-43	481	2.502236298	124
-43	547	2.510416122	70
-43	591	3.357873125	70
-43	613	3.507483017	124
-44	1	0.010067525	114
-44	21	0.649997418	114
-44	75	0.811182543	46
-44	97	0.811479384	78
-44	163	0.812804223	70
-44	181	0.81305129	430
-44	251	0.816128044	78
-44	264	0.816322172	126
-44	339	0.817371475	70
-44	393	1.482016333	70
-44	437	1.498240618	124
-44	481	2.502236298	124
-44	547	2.510416122	70
-44	591	3.357873125	70
-44	613	3.507483017	124
-45	1	0.010067525	0
-45	21	0.649997418	0
-45	75	0.811182543	0
-45	97	0.811479384	0
-45	163	0.812804223	0
-45	181	0.81305129	0
-45	251	0.816128044	0
-45	264	0.816322172	0
-45	339	0.817371475	0
-45	393	1.482016333	0
-45	437	1.498240618	0
-45	481	2.502236298	0
-45	547	2.510416122	0
-45	591	3.357873125	0
-45	613	3.507483017	0
-46	2	0.010067525	114
-46	31	0.809951148	46
-46	53	0.810624391	78
-46	119	0.811801059	70
-46	126	0.811925909	244
-46	207	0.814531668	70
-46	229	0.814805979	273
-46	280	0.816536622	196
-46	308	0.816927068	106
-46	361	0.858036533	70
-46	383	0.873874397	114
-46	415	1.482437664	70
-46	459	1.498951613	70
-46	503	2.502770486	70
-46	525	2.510002558	70
-46	569	3.317037599	73
-46	635	3.508020267	70
-47	2	0.010067525	114
-47	31	0.809951148	46
-47	53	0.810624391	78
-47	119	0.811801059	70
-47	126	0.811925909	244
-47	207	0.814531668	70
-47	229	0.814805979	273
-47	280	0.816536622	196
-47	308	0.816927068	106
-47	361	0.858036533	70
-47	383	0.873874397	114
-47	415	1.482437664	70
-47	459	1.498951613	70
-47	503	2.502770486	70
-47	525	2.510002558	70
-47	569	3.317037599	73
-47	635	3.508020267	70
-48	2	0.010067525	114
-48	31	0.809951148	46
-48	53	0.810624391	78
-48	119	0.811801059	70
-48	126	0.811925909	244
-48	207	0.814531668	70
-48	229	0.814805979	273
-48	280	0.816536622	196
-48	308	0.816927068	106
-48	361	0.858036533	70
-48	383	0.873874397	114
-48	415	1.482437664	70
-48	459	1.498951613	70
-48	503	2.502770486	70
-48	525	2.510002558	70
-48	569	3.317037599	73
-48	635	3.508020267	70
-49	2	0.010067525	0
-49	31	0.809951148	0
-49	53	0.810624391	0
-49	119	0.811801059	0
-49	126	0.811925909	0
-49	207	0.814531668	0
-49	229	0.814805979	0
-49	280	0.816536622	0
-49	308	0.816927068	0
-49	361	0.858036533	0
-49	383	0.873874397	0
-49	415	1.482437664	0
-49	459	1.498951613	0
-49	503	2.502770486	0
-49	525	2.510002558	0
-49	569	3.317037599	0
-49	635	3.508020267	0
-50	3	0.010165125	114
-50	22	0.650095018	114
-50	76	0.811240143	64
-50	98	0.811548184	78
-50	164	0.812866623	70
-50	186	0.81340169	430
-50	252	0.816196844	78
-50	274	0.816429372	126
-50	340	0.817433875	70
-50	394	1.482078733	70
-50	438	1.498346218	124
-50	482	2.502341898	124
-50	548	2.510478522	70
-50	592	3.357935525	70
-50	614	3.507588617	124
-51	4	0.010165125	114
-51	32	0.810008748	64
-51	54	0.810693191	78
-51	120	0.811863459	70
-51	142	0.812127509	244
-51	208	0.814594068	70
-51	230	0.815030779	273
-51	292	0.816699822	196
-51	309	0.817018268	106
-51	362	0.858098933	70
-51	384	0.873971997	114
-51	416	1.482500064	70
-51	460	1.499014013	70
-51	504	2.502832886	70
-51	526	2.510064958	70
-51	570	3.317102399	73
-51	636	3.508082667	70
-52	5	0.010165175	114
-52	23	0.650095068	114
-52	77	0.811240193	64
-52	99	0.811548234	78
-52	165	0.812866673	70
-52	187	0.81340174	430
-52	253	0.816196894	78
-52	275	0.816429422	126
-52	341	0.817433925	70
-52	395	1.482078783	70
-52	439	1.498346268	124
-52	483	2.502341948	124
-52	549	2.510478572	70
-52	593	3.357935575	70
-52	615	3.507588667	124
-53	5	0.010165175	114
-53	23	0.650095068	114
-53	77	0.811240193	64
-53	99	0.811548234	78
-53	165	0.812866673	70
-53	187	0.81340174	430
-53	253	0.816196894	78
-53	275	0.816429422	126
-53	341	0.817433925	70
-53	395	1.482078783	70
-53	439	1.498346268	124
-53	483	2.502341948	124
-53	549	2.510478572	70
-53	593	3.357935575	70
-53	615	3.507588667	124
-54	6	0.010165175	114
-54	33	0.810008798	64
-54	55	0.810693241	78
-54	121	0.811863509	70
-54	143	0.812127559	244
-54	209	0.814594118	70
-54	231	0.815030829	273
-54	293	0.816699872	196
-54	310	0.817018318	106
-54	363	0.858098983	70
-54	385	0.873972047	114
-54	417	1.482500114	70
-54	461	1.499014063	70
-54	505	2.502832936	70
-54	527	2.510065008	70
-54	571	3.317102449	73
-54	637	3.508082717	70
-55	6	0.010165175	114
-55	33	0.810008798	64
-55	55	0.810693241	78
-55	121	0.811863509	70
-55	143	0.812127559	244
-55	209	0.814594118	70
-55	231	0.815030829	273
-55	293	0.816699872	196
-55	310	0.817018318	106
-55	363	0.858098983	70
-55	385	0.873972047	114
-55	417	1.482500114	70
-55	461	1.499014063	70
-55	505	2.502832936	70
-55	527	2.510065008	70
-55	571	3.317102449	73
-55	637	3.508082717	70
-56	9	0.010165175	114
-56	25	0.650095068	114
-56	79	0.811240193	64
-56	101	0.811548234	78
-56	167	0.812866673	70
-56	189	0.81340174	430
-56	255	0.816196894	78
-56	277	0.816429422	126
-56	343	0.817433925	70
-56	397	1.482078783	70
-56	441	1.498346268	124
-56	485	2.502341948	124
-56	551	2.510478572	70
-56	595	3.357935575	70
-56	617	3.507588667	124
-57	9	0.010165175	114
-57	25	0.650095068	114
-57	79	0.811240193	64
-57	101	0.811548234	78
-57	167	0.812866673	70
-57	189	0.81340174	430
-57	255	0.816196894	78
-57	277	0.816429422	126
-57	343	0.817433925	70
-57	397	1.482078783	70
-57	441	1.498346268	124
-57	485	2.502341948	124
-57	551	2.510478572	70
-57	595	3.357935575	70
-57	617	3.507588667	124
-58	9	0.010165175	114
-58	25	0.650095068	114
-58	79	0.811240193	64
-58	101	0.811548234	78
-58	167	0.812866673	70
-58	189	0.81340174	430
-58	255	0.816196894	78
-58	277	0.816429422	126
-58	343	0.817433925	70
-58	397	1.482078783	70
-58	441	1.498346268	124
-58	485	2.502341948	124
-58	551	2.510478572	70
-58	595	3.357935575	70
-58	617	3.507588667	124
-59	9	0.010165175	0
-59	25	0.650095068	0
-59	79	0.811240193	0
-59	101	0.811548234	0
-59	167	0.812866673	0
-59	189	0.81340174	0
-59	255	0.816196894	0
-59	277	0.816429422	0
-59	343	0.817433925	0
-59	397	1.482078783	0
-59	441	1.498346268	0
-59	485	2.502341948	0
-59	551	2.510478572	0
-59	595	3.357935575	0
-59	617	3.507588667	0
-60	10	0.010165175	114
-60	35	0.810008798	64
-60	57	0.810693241	78
-60	123	0.811863509	70
-60	145	0.812127559	244
-60	211	0.814594118	70
-60	233	0.815030829	273
-60	295	0.816699872	196
-60	312	0.817018318	106
-60	365	0.858098983	70
-60	387	0.873972047	114
-60	419	1.482500114	70
-60	463	1.499014063	70
-60	507	2.502832936	70
-60	529	2.510065008	70
-60	573	3.317102449	73
-60	639	3.508082717	70
-61	10	0.010165175	114
-61	35	0.810008798	64
-61	57	0.810693241	78
-61	123	0.811863509	70
-61	145	0.812127559	244
-61	211	0.814594118	70
-61	233	0.815030829	273
-61	295	0.816699872	196
-61	312	0.817018318	106
-61	365	0.858098983	70
-61	387	0.873972047	114
-61	419	1.482500114	70
-61	463	1.499014063	70
-61	507	2.502832936	70
-61	529	2.510065008	70
-61	573	3.317102449	73
-61	639	3.508082717	70
-62	10	0.010165175	114
-62	35	0.810008798	64
-62	57	0.810693241	78
-62	123	0.811863509	70
-62	145	0.812127559	244
-62	211	0.814594118	70
-62	233	0.815030829	273
-62	295	0.816699872	196
-62	312	0.817018318	106
-62	365	0.858098983	70
-62	387	0.873972047	114
-62	419	1.482500114	70
-62	463	1.499014063	70
-62	507	2.502832936	70
-62	529	2.510065008	70
-62	573	3.317102449	73
-62	639	3.508082717	70
-63	10	0.010165175	0
-63	35	0.810008798	0
-63	57	0.810693241	0
-63	123	0.811863509	0
-63	145	0.812127559	0
-63	211	0.814594118	0
-63	233	0.815030829	0
-63	295	0.816699872	0
-63	312	0.817018318	0
-63	365	0.858098983	0
-63	387	0.873972047	0
-63	419	1.482500114	0
-63	463	1.499014063	0
-63	507	2.502832936	0
-63	529	2.510065008	0
-63	573	3.317102449	0
-63	639	3.508082717	0
-64	13	0.010262775	114
-64	27	0.650192668	114
-64	81	0.811297793	64
-64	103	0.811617034	78
-64	169	0.812929073	70
-64	191	0.81375214	430
-64	257	0.816265694	78
-64	279	0.816536622	126
-64	345	0.817496325	70
-64	399	1.482141183	70
-64	443	1.498451868	124
-64	487	2.502447548	124
-64	553	2.510540972	70
-64	597	3.357997975	70
-64	619	3.507694267	124
-65	14	0.010262775	114
-65	37	0.810066398	64
-65	59	0.810762041	78
-65	125	0.811925909	70
-65	147	0.812329159	244
-65	213	0.814656518	70
-65	235	0.815255629	273
-65	301	0.816863072	196
-65	319	0.817109518	106
-65	367	0.858161383	70
-65	389	0.874069647	114
-65	421	1.482562514	70
-65	465	1.499076463	70
-65	509	2.502895336	70
-65	531	2.510127408	70
-65	575	3.317167249	73
-65	641	3.508145117	70
-66	15	0.010262825	114
-66	28	0.650192718	114
-66	82	0.811297843	64
-66	104	0.811617084	78
-66	170	0.812929123	70
-66	192	0.81375219	430
-66	258	0.816265744	78
-66	281	0.816536672	126
-66	346	0.817496375	70
-66	400	1.482141233	70
-66	444	1.498451918	124
-66	488	2.502447598	124
-66	554	2.510541022	70
-66	598	3.357998025	70
-66	620	3.507694317	124
-67	15	0.010262825	114
-67	28	0.650192718	114
-67	82	0.811297843	64
-67	104	0.811617084	78
-67	170	0.812929123	70
-67	192	0.81375219	430
-67	258	0.816265744	78
-67	281	0.816536672	126
-67	346	0.817496375	70
-67	400	1.482141233	70
-67	444	1.498451918	124
-67	488	2.502447598	124
-67	554	2.510541022	70
-67	598	3.357998025	70
-67	620	3.507694317	124
-68	16	0.010262825	114
-68	38	0.810066448	64
-68	60	0.810762091	78
-68	127	0.811925959	70
-68	148	0.812329209	244
-68	214	0.814656568	70
-68	236	0.815255679	273
-68	302	0.816863122	196
-68	320	0.817109568	106
-68	368	0.858161433	70
-68	390	0.874069697	114
-68	422	1.482562564	70
-68	466	1.499076513	70
-68	510	2.502895386	70
-68	532	2.510127458	70
-68	576	3.317167299	73
-68	642	3.508145167	70
-69	16	0.010262825	114
-69	38	0.810066448	64
-69	60	0.810762091	78
-69	127	0.811925959	70
-69	148	0.812329209	244
-69	214	0.814656568	70
-69	236	0.815255679	273
-69	302	0.816863122	196
-69	320	0.817109568	106
-69	368	0.858161433	70
-69	390	0.874069697	114
-69	422	1.482562564	70
-69	466	1.499076513	70
-69	510	2.502895386	70
-69	532	2.510127458	70
-69	576	3.317167299	73
-69	642	3.508145167	70
-70	39	0.810066448	46
-70	61	0.810762091	60
-70	128	0.811925959	52
-70	149	0.812329209	226
-70	215	0.814656568	52
-70	237	0.815255679	255
-70	303	0.816863122	178
-70	321	0.817109568	88
-70	369	0.858161433	52
-70	423	1.482562564	52
-70	467	1.499076513	52
-70	511	2.502895386	52
-70	533	2.510127458	52
-70	577	3.317167299	55
-70	643	3.508145167	52
-71	40	0.810066448	28
-72	41	0.810066448	28
-72	107	0.811617084	60
-72	173	0.812929123	52
-72	195	0.81375219	412
-72	261	0.816265744	60
-72	284	0.816536672	108
-72	349	0.817496375	52
-72	403	1.482141233	52
-72	447	1.498451918	106
-72	491	2.502447598	106
-72	557	2.510541022	52
-72	601	3.357998025	52
-72	623	3.507694317	106
-73	42	0.810066448	46
-73	108	0.811617084	78
-73	174	0.812929123	70
-73	196	0.81375219	430
-73	262	0.816265744	78
-73	285	0.816536672	126
-73	350	0.817496375	70
-73	404	1.482141233	70
-73	448	1.498451918	124
-73	492	2.502447598	124
-73	558	2.510541022	70
-73	602	3.357998025	70
-73	624	3.507694317	124
-74	42	0.810066448	46
-74	108	0.811617084	78
-74	174	0.812929123	70
-74	196	0.81375219	430
-74	262	0.816265744	78
-74	285	0.816536672	126
-74	350	0.817496375	70
-74	404	1.482141233	70
-74	448	1.498451918	124
-74	492	2.502447598	124
-74	558	2.510541022	70
-74	602	3.357998025	70
-74	624	3.507694317	124
-75	42	0.810066448	46
-75	108	0.811617084	78
-75	174	0.812929123	70
-75	196	0.81375219	430
-75	262	0.816265744	78
-75	285	0.816536672	126
-75	350	0.817496375	70
-75	404	1.482141233	70
-75	448	1.498451918	124
-75	492	2.502447598	124
-75	558	2.510541022	70
-75	602	3.357998025	70
-75	624	3.507694317	124
-76	42	0.810066448	0
-76	108	0.811617084	0
-76	174	0.812929123	0
-76	196	0.81375219	0
-76	262	0.816265744	0
-76	285	0.816536672	0
-76	350	0.817496375	0
-76	404	1.482141233	0
-76	448	1.498451918	0
-76	492	2.502447598	0
-76	558	2.510541022	0
-76	602	3.357998025	0
-76	624	3.507694317	0
-77	44	0.810124048	64
-77	110	0.811685884	78
-77	176	0.812991523	70
-77	198	0.81410259	430
-77	265	0.816334544	78
-77	287	0.816643872	126
-77	352	0.817558775	70
-77	406	1.482203633	70
-77	450	1.498557518	124
-77	494	2.502553198	124
-77	560	2.510603422	70
-77	604	3.358060425	70
-77	626	3.507799917	124
-78	45	0.810124098	64
-78	111	0.811685934	78
-78	177	0.812991573	70
-78	199	0.81410264	430
-78	266	0.816334594	78
-78	288	0.816643922	126
-78	353	0.817558825	70
-78	407	1.482203683	70
-78	451	1.498557568	124
-78	495	2.502553248	124
-78	561	2.510603472	70
-78	605	3.358060475	70
-78	627	3.507799967	124
-79	45	0.810124098	64
-79	111	0.811685934	78
-79	177	0.812991573	70
-79	199	0.81410264	430
-79	266	0.816334594	78
-79	288	0.816643922	126
-79	353	0.817558825	70
-79	407	1.482203683	70
-79	451	1.498557568	124
-79	495	2.502553248	124
-79	561	2.510603472	70
-79	605	3.358060475	70
-79	627	3.507799967	124
-80	47	0.810124098	64
-80	113	0.811685934	78
-80	179	0.812991573	70
-80	201	0.81410264	430
-80	268	0.816334594	78
-80	290	0.816643922	126
-80	355	0.817558825	70
-80	409	1.482203683	70
-80	453	1.498557568	124
-80	497	2.502553248	124
-80	563	2.510603472	70
-80	607	3.358060475	70
-80	629	3.507799967	124
-81	47	0.810124098	64
-81	113	0.811685934	78
-81	179	0.812991573	70
-81	201	0.81410264	430
-81	268	0.816334594	78
-81	290	0.816643922	126
-81	355	0.817558825	70
-81	409	1.482203683	70
-81	453	1.498557568	124
-81	497	2.502553248	124
-81	563	2.510603472	70
-81	607	3.358060475	70
-81	629	3.507799967	124
-82	47	0.810124098	64
-82	113	0.811685934	78
-82	179	0.812991573	70
-82	201	0.81410264	430
-82	268	0.816334594	78
-82	290	0.816643922	126
-82	355	0.817558825	70
-82	409	1.482203683	70
-82	453	1.498557568	124
-82	497	2.502553248	124
-82	563	2.510603472	70
-82	607	3.358060475	70
-82	629	3.507799967	124
-83	47	0.810124098	0
-83	113	0.811685934	0
-83	179	0.812991573	0
-83	201	0.81410264	0
-83	268	0.816334594	0
-83	290	0.816643922	0
-83	355	0.817558825	0
-83	409	1.482203683	0
-83	453	1.498557568	0
-83	497	2.502553248	0
-83	563	2.510603472	0
-83	607	3.358060475	0
-83	629	3.507799967	0
-84	49	0.810181698	64
-84	115	0.811754734	78
-84	182	0.813053973	70
-84	203	0.81445304	430
-84	270	0.816403394	78
-84	297	0.816751122	126
-84	357	0.817621225	70
-84	411	1.482266083	70
-84	455	1.498663168	124
-84	499	2.502658848	124
-84	565	2.510665872	70
-84	609	3.358122875	70
-84	631	3.507905567	124
-85	50	0.810181748	64
-85	116	0.811754784	78
-85	183	0.813054023	70
-85	204	0.81445309	430
-85	271	0.816403444	78
-85	298	0.816751172	126
-85	358	0.817621275	70
-85	412	1.482266133	70
-85	456	1.498663218	124
-85	500	2.502658898	124
-85	566	2.510665922	70
-85	610	3.358122925	70
-85	632	3.507905617	124
-86	50	0.810181748	64
-86	116	0.811754784	78
-86	183	0.813054023	70
-86	204	0.81445309	430
-86	271	0.816403444	78
-86	298	0.816751172	126
-86	358	0.817621275	70
-86	412	1.482266133	70
-86	456	1.498663218	124
-86	500	2.502658898	124
-86	566	2.510665922	70
-86	610	3.358122925	70
-86	632	3.507905617	124
-87	51	0.810181748	64
-87	117	0.811754784	78
-87	184	0.813054023	70
-87	205	0.81445309	430
-87	272	0.816403444	78
-87	299	0.816751172	126
-87	359	0.817621275	70
-87	413	1.482266133	70
-87	457	1.498663218	124
-87	501	2.502658898	124
-87	567	2.510665922	70
-87	611	3.358122925	70
-87	633	3.507905617	124
-88	51	0.810181748	60
-88	117	0.811754784	74
-88	184	0.813054023	66
-88	205	0.81445309	426
-88	272	0.816403444	74
-88	299	0.816751172	122
-88	359	0.817621275	66
-88	413	1.482266133	66
-88	457	1.498663218	120
-88	501	2.502658898	120
-88	567	2.510665922	66
-88	611	3.358122925	66
-88	633	3.507905617	120
-89	62	0.810762091	28
-90	63	0.810762091	28
-90	85	0.811297843	60
-90	130	0.811925959	52
-90	151	0.812329209	226
-90	217	0.814656568	52
-90	239	0.815255679	255
-90	305	0.816863122	178
-90	323	0.817109568	88
-90	371	0.858161433	52
-90	425	1.482562564	52
-90	469	1.499076513	52
-90	513	2.502895386	52
-90	535	2.510127458	52
-90	579	3.317167299	55
-90	645	3.508145167	52
-91	64	0.810762091	46
-91	86	0.811297843	78
-91	131	0.811925959	70
-91	152	0.812329209	244
-91	218	0.814656568	70
-91	240	0.815255679	273
-91	306	0.816863122	196
-91	324	0.817109568	106
-91	372	0.858161433	70
-91	426	1.482562564	70
-91	470	1.499076513	70
-91	514	2.502895386	70
-91	536	2.510127458	70
-91	580	3.317167299	73
-91	646	3.508145167	70
-92	64	0.810762091	46
-92	86	0.811297843	78
-92	131	0.811925959	70
-92	152	0.812329209	244
-92	218	0.814656568	70
-92	240	0.815255679	273
-92	306	0.816863122	196
-92	324	0.817109568	106
-92	372	0.858161433	70
-92	426	1.482562564	70
-92	470	1.499076513	70
-92	514	2.502895386	70
-92	536	2.510127458	70
-92	580	3.317167299	73
-92	646	3.508145167	70
-93	64	0.810762091	46
-93	86	0.811297843	78
-93	131	0.811925959	70
-93	152	0.812329209	244
-93	218	0.814656568	70
-93	240	0.815255679	273
-93	306	0.816863122	196
-93	324	0.817109568	106
-93	372	0.858161433	70
-93	426	1.482562564	70
-93	470	1.499076513	70
-93	514	2.502895386	70
-93	536	2.510127458	70
-93	580	3.317167299	73
-93	646	3.508145167	70
-94	64	0.810762091	0
-94	86	0.811297843	0
-94	131	0.811925959	0
-94	152	0.812329209	0
-94	218	0.814656568	0
-94	240	0.815255679	0
-94	306	0.816863122	0
-94	324	0.817109568	0
-94	372	0.858161433	0
-94	426	1.482562564	0
-94	470	1.499076513	0
-94	514	2.502895386	0
-94	536	2.510127458	0
-94	580	3.317167299	0
-94	646	3.508145167	0
-95	66	0.810819691	64
-95	88	0.811366643	78
-95	133	0.811988359	70
-95	154	0.812530809	244
-95	220	0.814718968	70
-95	242	0.815480479	273
-95	313	0.817026322	196
-95	330	0.817200768	106
-95	374	0.858223833	70
-95	428	1.482624964	70
-95	472	1.499138913	70
-95	516	2.502957786	70
-95	538	2.510189858	70
-95	582	3.317232099	73
-95	648	3.508207567	70
-96	67	0.810819741	64
-96	89	0.811366693	78
-96	134	0.811988409	70
-96	155	0.812530859	244
-96	221	0.814719018	70
-96	243	0.815480529	273
-96	314	0.817026372	196
-96	331	0.817200818	106
-96	375	0.858223883	70
-96	429	1.482625014	70
-96	473	1.499138963	70
-96	517	2.502957836	70
-96	539	2.510189908	70
-96	583	3.317232149	73
-96	649	3.508207617	70
-97	67	0.810819741	64
-97	89	0.811366693	78
-97	134	0.811988409	70
-97	155	0.812530859	244
-97	221	0.814719018	70
-97	243	0.815480529	273
-97	314	0.817026372	196
-97	331	0.817200818	106
-97	375	0.858223883	70
-97	429	1.482625014	70
-97	473	1.499138963	70
-97	517	2.502957836	70
-97	539	2.510189908	70
-97	583	3.317232149	73
-97	649	3.508207617	70
-98	69	0.810819741	64
-98	91	0.811366693	78
-98	136	0.811988409	70
-98	157	0.812530859	244
-98	223	0.814719018	70
-98	245	0.815480529	273
-98	316	0.817026372	196
-98	333	0.817200818	106
-98	377	0.858223883	70
-98	431	1.482625014	70
-98	475	1.499138963	70
-98	519	2.502957836	70
-98	541	2.510189908	70
-98	585	3.317232149	73
-98	651	3.508207617	70
-99	69	0.810819741	64
-99	91	0.811366693	78
-99	136	0.811988409	70
-99	157	0.812530859	244
-99	223	0.814719018	70
-99	245	0.815480529	273
-99	316	0.817026372	196
-99	333	0.817200818	106
-99	377	0.858223883	70
-99	431	1.482625014	70
-99	475	1.499138963	70
-99	519	2.502957836	70
-99	541	2.510189908	70
-99	585	3.317232149	73
-99	651	3.508207617	70
-100	69	0.810819741	64
-100	91	0.811366693	78
-100	136	0.811988409	70
-100	157	0.812530859	244
-100	223	0.814719018	70
-100	245	0.815480529	273
-100	316	0.817026372	196
-100	333	0.817200818	106
-100	377	0.858223883	70
-100	431	1.482625014	70
-100	475	1.499138963	70
-100	519	2.502957836	70
-100	541	2.510189908	70
-100	585	3.317232149	73
-100	651	3.508207617	70
-101	69	0.810819741	0
-101	91	0.811366693	0
-101	136	0.811988409	0
-101	157	0.812530859	0
-101	223	0.814719018	0
-101	245	0.815480529	0
-101	316	0.817026372	0
-101	333	0.817200818	0
-101	377	0.858223883	0
-101	431	1.482625014	0
-101	475	1.499138963	0
-101	519	2.502957836	0
-101	541	2.510189908	0
-101	585	3.317232149	0
-101	651	3.508207617	0
-102	71	0.810877341	64
-102	93	0.811435493	78
-102	138	0.812050809	70
-102	159	0.812732459	244
-102	225	0.814781418	70
-102	247	0.815705329	273
-102	326	0.817189572	196
-102	335	0.817292018	106
-102	379	0.858286283	70
-102	433	1.482687414	70
-102	477	1.499201363	70
-102	521	2.503020236	70
-102	543	2.510252308	70
-102	587	3.317296949	73
-102	653	3.508270017	70
-103	72	0.810877391	64
-103	94	0.811435543	78
-103	139	0.812050859	70
-103	160	0.812732509	244
-103	226	0.814781468	70
-103	248	0.815705379	273
-103	327	0.817189622	196
-103	336	0.817292068	106
-103	380	0.858286333	70
-103	434	1.482687464	70
-103	478	1.499201413	70
-103	522	2.503020286	70
-103	544	2.510252358	70
-103	588	3.317296999	73
-103	654	3.508270067	70
-104	72	0.810877391	64
-104	94	0.811435543	78
-104	139	0.812050859	70
-104	160	0.812732509	244
-104	226	0.814781468	70
-104	248	0.815705379	273
-104	327	0.817189622	196
-104	336	0.817292068	106
-104	380	0.858286333	70
-104	434	1.482687464	70
-104	478	1.499201413	70
-104	522	2.503020286	70
-104	544	2.510252358	70
-104	588	3.317296999	73
-104	654	3.508270067	70
-105	73	0.810877391	64
-105	95	0.811435543	78
-105	140	0.812050859	70
-105	161	0.812732509	244
-105	227	0.814781468	70
-105	249	0.815705379	273
-105	328	0.817189622	196
-105	337	0.817292068	106
-105	381	0.858286333	70
-105	435	1.482687464	70
-105	479	1.499201413	70
-105	523	2.503020286	70
-105	545	2.510252358	70
-105	589	3.317296999	73
-105	655	3.508270067	70
-106	73	0.810877391	60
-106	95	0.811435543	74
-106	140	0.812050859	66
-106	161	0.812732509	240
-106	227	0.814781468	66
-106	249	0.815705379	269
-106	328	0.817189622	192
-106	337	0.817292068	102
-106	381	0.858286333	66
-106	435	1.482687464	66
-106	479	1.499201413	66
-106	523	2.503020286	66
-106	545	2.510252358	66
-106	589	3.317296999	69
-106	655	3.508270067	66
-107	83	0.811297843	46
-107	105	0.811617084	60
-107	171	0.812929123	52
-107	193	0.81375219	412
-107	259	0.816265744	60
-107	282	0.816536672	108
-107	347	0.817496375	52
-107	401	1.482141233	52
-107	445	1.498451918	106
-107	489	2.502447598	106
-107	555	2.510541022	52
-107	599	3.357998025	52
-107	621	3.507694317	106
+27	0	0	0
+27	13	0.184771173726	0
+27	13	0.184771173726	0
+27	16	0.184771840854	0
+27	16	0.184771840854	0
+27	22	0.194817840854	0
+27	22	0.194817840854	0
+27	25	0.194818507982	0
+27	25	0.194818507982	0
+27	28	0.284725173726	0
+27	28	0.284725173726	2
+27	31	0.284725173726	2
+27	31	0.284725173726	0
+27	34	0.284725173726	0
+27	34	0.284725173726	0
+27	46	0.284772507982	0
+27	46	0.284772507982	0
+27	58	0.484771173726	0
+27	58	0.484771173726	0
+27	61	0.484771840854	0
+27	61	0.484771840854	0
+27	67	0.494817840854	0
+27	67	0.494817840854	0
+27	70	0.494818507982	0
+27	70	0.494818507982	0
+27	86	0.684725840854	0
+27	86	0.684725840854	2
+27	87	0.684725840854	2
+27	87	0.684725840854	1
+27	90	0.684771840854	1
+27	90	0.684771840854	2
+27	93	0.684821840854	2
+27	93	0.684821840854	0
+27	95	0.684821840854	0
+27	95	0.684821840854	0
+27	108	0.68534917511	0
+27	108	0.68534917511	0
+27	121	0.884771173726	0
+27	121	0.884771173726	0
+27	124	0.884771840854	0
+27	124	0.884771840854	0
+27	130	0.894817840854	0
+27	130	0.894817840854	0
+27	133	0.894818507982	0
+27	133	0.894818507982	0
+27	141	0.984725173726	0
+27	141	0.984725173726	2
+27	144	0.984725173726	2
+27	144	0.984725173726	0
+27	149	0.984725173726	0
+27	149	0.984725173726	0
+27	159	0.984811840854	0
+27	159	0.984811840854	0
+27	160	0.984822840854	0
+27	160	0.984822840854	2
+27	161	0.985641840854	2
+27	161	0.985641840854	0
+27	163	0.985641840854	0
+27	163	0.985641840854	0
+27	170	0.994857840854	0
+27	170	0.994857840854	0
+27	171	0.994868840854	0
+27	171	0.994868840854	2
+27	172	0.996647840854	2
+27	172	0.996647840854	0
+27	174	0.996647840854	0
+27	174	0.996647840854	0
+27	181	1.004900507982	0
+27	181	1.004900507982	0
+27	182	1.004911507982	0
+27	182	1.004911507982	2
+27	183	1.008430507982	2
+27	183	1.008430507982	0
+27	185	1.008430507982	0
+27	185	1.008430507982	0
+27	192	1.01494317511	0
+27	192	1.01494317511	0
+27	193	1.01495417511	0
+27	193	1.01495417511	2
+27	194	1.01675317511	2
+27	194	1.01675317511	0
+27	196	1.01675317511	0
+27	196	1.01675317511	0
+27	203	1.024985842238	0
+27	203	1.024985842238	0
+27	204	1.024996842238	0
+27	204	1.024996842238	2
+27	206	1.042015842238	2
+27	206	1.042015842238	0
+27	208	1.042015842238	0
+27	208	1.042015842238	0
+27	217	1.084811173726	0
+27	217	1.084811173726	0
+28	0	0	31
+29	0	0	31
+29	160	0.984822840854	63
+29	171	0.994868840854	127
+29	182	1.004911507982	255
+29	193	1.01495417511	511
+29	204	1.024996842238	1023
+30	2	0.163464953215	49
+30	12	0.184725840854	49
+30	30	0.284725173726	49
+30	50	0.413464953215	49
+30	57	0.484725840854	49
+30	76	0.584725173726	49
+30	85	0.684725173726	49
+30	113	0.834725173726	49
+30	120	0.884725840854	49
+30	138	0.984725173726	49
+30	211	1.084725840854	49
+30	219	1.084817840854	34
+31	2	0.163464953215	9
+31	14	0.184771173726	19
+31	30	0.284725173726	18
+31	50	0.413464953215	4
+31	59	0.484771173726	23
+31	76	0.584725173726	6
+31	88	0.684771173726	24
+31	113	0.834725173726	12
+31	122	0.884771173726	26
+31	138	0.984725173726	1
+31	211	1.084725840854	5
+32	3	0.163464953215	1
+32	73	0.584725173726	1
+32	137	0.984725173726	2
+33	8	0.163464953215	49
+33	18	0.185201840854	49
+33	36	0.284725173726	49
+33	53	0.413464953215	49
+33	63	0.485281840854	49
+33	80	0.584725173726	49
+33	98	0.685301840854	49
+33	116	0.834725173726	49
+33	126	0.885341840854	49
+33	145	0.984725173726	49
+33	221	1.084817840854	49
+33	221	1.084817840854	34
+34	8	0.163464953215	0.078739779489
+34	18	0.185201840854	0.000476667128
+34	36	0.284725173726	0
+34	53	0.413464953215	0.028739779489
+34	63	0.485281840854	0.000556667128
+34	80	0.584725173726	0
+34	98	0.685301840854	0.000576667128
+34	116	0.834725173726	0.05
+34	126	0.885341840854	0.000616667128
+34	145	0.984725173726	0
+34	221	1.084817840854	9.2667128e-05
+34	221	1.084817840854	0
+35	8	0.163464953215	24000000
+35	18	0.185201840854	24000000
+35	36	0.284725173726	24000000
+35	53	0.413464953215	24000000
+35	63	0.485281840854	24000000
+35	80	0.584725173726	24000000
+35	98	0.685301840854	24000000
+35	116	0.834725173726	24000000
+35	126	0.885341840854	24000000
+35	145	0.984725173726	24000000
+35	216	1.084811173726	24000000
+35	221	1.084817840854	24000000
+36	8	0.163464953215	49
+36	18	0.185201840854	49
+36	36	0.284725173726	49
+36	53	0.413464953215	49
+36	63	0.485281840854	49
+36	80	0.584725173726	49
+36	98	0.685301840854	49
+36	116	0.834725173726	49
+36	126	0.885341840854	49
+36	145	0.984725173726	49
+36	221	1.084817840854	49
+36	224	1.084821173726	49
+37	9	0.163464953215	1
+37	10	0.184725173726	2
+37	14	0.184771173726	1
+37	15	0.184771840854	0
+37	19	0.185201840854	1
+37	20	0.194771840854	2
+37	23	0.194817840854	1
+37	24	0.194818507982	0
+37	37	0.284725173726	1
+37	38	0.284725840854	2
+37	44	0.284771840854	1
+37	45	0.284772507982	0
+37	54	0.413464953215	1
+37	55	0.484725173726	2
+37	59	0.484771173726	1
+37	60	0.484771840854	0
+37	64	0.485281840854	1
+37	65	0.494771840854	2
+37	68	0.494817840854	1
+37	69	0.494818507982	0
+37	81	0.584725173726	1
+37	82	0.684725173726	2
+37	88	0.684771173726	1
+37	89	0.684771840854	0
+37	99	0.685301840854	1
+37	100	0.685302507982	2
+37	106	0.685348507982	1
+37	107	0.68534917511	0
+37	117	0.834725173726	1
+37	118	0.884725173726	2
+37	122	0.884771173726	1
+37	123	0.884771840854	0
+37	127	0.885341840854	1
+37	128	0.894771840854	2
+37	131	0.894817840854	1
+37	132	0.894818507982	0
+37	146	0.984725173726	1
+37	147	0.984725173726	2
+37	156	0.984771173726	1
+37	157	0.984771840854	0
+37	222	1.084817840854	1
+37	223	1.084821173726	2
+38	14	0.184771173726	49
+38	23	0.194817840854	49
+38	44	0.284771840854	49
+38	59	0.484771173726	49
+38	68	0.494817840854	49
+38	88	0.684771173726	49
+38	106	0.685348507982	49
+38	122	0.884771173726	49
+38	131	0.894817840854	49
+38	156	0.984771173726	49
+39	14	0.184771173726	49
+39	23	0.194817840854	49
+39	44	0.284771840854	49
+39	59	0.484771173726	49
+39	68	0.494817840854	49
+39	88	0.684771173726	49
+39	106	0.685348507982	49
+39	122	0.884771173726	49
+39	131	0.894817840854	49
+39	156	0.984771173726	49
+40	14	0.184771173726	49
+40	23	0.194817840854	49
+40	44	0.284771840854	49
+40	59	0.484771173726	49
+40	68	0.494817840854	49
+40	88	0.684771173726	49
+40	106	0.685348507982	49
+40	122	0.884771173726	49
+40	131	0.894817840854	49
+40	156	0.984771173726	49
+41	14	0.184771173726	49
+41	23	0.194817840854	49
+41	44	0.284771840854	49
+41	59	0.484771173726	49
+41	68	0.494817840854	49
+41	88	0.684771173726	49
+41	106	0.685348507982	49
+41	122	0.884771173726	49
+41	131	0.894817840854	49
+41	156	0.984771173726	49
+42	14	0.184771173726	0.021306220511
+42	23	0.194817840854	0.009616
+42	44	0.284771840854	4.6667128e-05
+42	59	0.484771173726	0.071306220511
+42	68	0.494817840854	0.009536
+42	88	0.684771173726	0.100046
+42	106	0.685348507982	4.6667128e-05
+42	122	0.884771173726	0.050046
+42	131	0.894817840854	0.009476
+42	156	0.984771173726	4.6e-05
+43	28	0.284725173726	32
+43	86	0.684725840854	32
+43	141	0.984725173726	34
+44	28	0.284725173726	21
+44	86	0.684725840854	24
+44	141	0.984725173726	6
+44	160	0.984822840854	39
+44	171	0.994868840854	87
+44	182	1.004911507982	174
+44	193	1.01495417511	88
+44	204	1.024996842238	849
+45	33	0.284725173726	32
+45	94	0.684821840854	32
+45	148	0.984725173726	34
+46	33	0.284725173726	0.021260220511
+46	94	0.684821840854	9.6667128e-05
+46	148	0.984725173726	0
+47	33	0.284725173726	24000000
+47	94	0.684821840854	24000000
+47	148	0.984725173726	24000000
+47	162	0.985641840854	24000000
+47	173	0.996647840854	24000000
+47	184	1.008430507982	24000000
+47	195	1.01675317511	24000000
+47	207	1.042015842238	24000000
+48	33	0.284725173726	32
+48	94	0.684821840854	32
+48	148	0.984725173726	34
+48	162	0.985641840854	34
+48	173	0.996647840854	34
+48	184	1.008430507982	34
+48	195	1.01675317511	34
+48	207	1.042015842238	34
+49	34	0.284725173726	1
+49	35	0.284725173726	2
+49	41	0.284763173726	1
+49	42	0.284763840854	0
+49	95	0.684821840854	1
+49	96	0.685301840854	2
+49	103	0.685339840854	1
+49	104	0.685340507982	0
+49	149	0.984725173726	1
+49	150	0.984725840854	2
+49	153	0.984767840854	1
+49	154	0.984768507982	0
+49	163	0.985641840854	1
+49	164	0.994771840854	2
+49	167	0.994813840854	1
+49	168	0.994814507982	0
+49	174	0.996647840854	1
+49	175	1.004814507982	2
+49	178	1.004856507982	1
+49	179	1.00485717511	0
+49	185	1.008430507982	1
+49	186	1.01485717511	2
+49	189	1.01489917511	1
+49	190	1.014899842238	0
+49	196	1.01675317511	1
+49	197	1.024899842238	2
+49	200	1.024941842238	1
+49	201	1.024942509366	0
+49	208	1.042015842238	1
+49	209	1.084725173726	2
+49	213	1.084767173726	1
+49	214	1.084767840854	0
+50	41	0.284763173726	32
+50	103	0.685339840854	32
+50	153	0.984767840854	34
+50	167	0.994813840854	34
+50	178	1.004856507982	34
+50	189	1.01489917511	34
+50	200	1.024941842238	34
+50	213	1.084767173726	34
+51	41	0.284763173726	32
+51	103	0.685339840854	32
+52	41	0.284763173726	32
+52	103	0.685339840854	32
+53	41	0.284763173726	32
+53	103	0.685339840854	32
+53	153	0.984767840854	34
+54	41	0.284763173726	3.8e-05
+54	103	0.685339840854	0.000518
+55	73	0.584725173726	1
+56	91	0.684821840854	49
+57	91	0.684821840854	49
+58	91	0.684821840854	49
+59	91	0.684821840854	49
+60	91	0.684821840854	49
+61	137	0.984725173726	1
+62	153	0.984767840854	34
+62	167	0.994813840854	34
+62	178	1.004856507982	34
+62	189	1.01489917511	34
+62	200	1.024941842238	34
+62	213	1.084767173726	34
+63	153	0.984767840854	0
+63	153	0.984767840854	4.4e-05
+63	159	0.984811840854	0
+63	167	0.994813840854	0
+63	167	0.994813840854	4.4e-05
+63	170	0.994857840854	0
+63	178	1.004856507982	0
+63	178	1.004856507982	4.4e-05
+63	181	1.004900507982	0
+63	189	1.01489917511	0
+63	189	1.01489917511	4.4e-05
+63	192	1.01494317511	0
+63	200	1.024941842238	0
+63	200	1.024941842238	4.4e-05
+63	203	1.024985842238	0
+63	213	1.084767173726	0
+63	213	1.084767173726	4.4e-05
+63	217	1.084811173726	0
+64	167	0.994813840854	34
+64	178	1.004856507982	34
+64	189	1.01489917511	34
+64	200	1.024941842238	34
+64	213	1.084767173726	34
+65	216	1.084811173726	34
+66	216	1.084811173726	34
+67	216	1.084811173726	34
+68	216	1.084811173726	34
 
