@@ -82,13 +82,14 @@ session = zenoh.open(conf)
 print(f"Declaring Publisher on '{key}'...")
 pub = session.declare_publisher(key)
 
+paylod_with_100MB = "a" * 1024 * 1024 * 100
+
 start_time = int(time.time() * 1000)
 for idx in itertools.count() if args.iter is None else range(args.iter):
-    time.sleep(0.1)
     print(f"The sent packet id: {idx}")
     sent_time = int(time.time() * 1000)
     sent_packet_info_list.append({"packet_id": idx, "sent_time": sent_time})
-    pub.put(f"{idx}")
+    pub.put(f"{idx},{paylod_with_100MB}")
 pub.undeclare()
 session.close()
 # convert packet info list to json and store to result_filepath

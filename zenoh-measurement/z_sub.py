@@ -84,9 +84,11 @@ print("Declaring Subscriber on '{}'...".format(key))
 
 def listener(sample: Sample):
     received_time = int(time.time() * 1000)
-    received_packet_id = sample.payload.decode('utf-8')
+    received_str = sample.payload.decode('utf-8')
+    comma_index = received_str.find(",")
+    received_packet_id = received_str[:comma_index]
     received_packet_list.append({"packet_id": received_packet_id, "received_time": received_time})
-    print(f"received packet id: {sample.payload.decode('utf-8')}")
+    print(f"received packet id: {received_packet_id}")
 
 # WARNING, you MUST store the return value in order for the subscription to work!!
 # This is because if you don't, the reference counter will reach 0 and the subscription
