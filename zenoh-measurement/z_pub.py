@@ -60,7 +60,8 @@ parser.add_argument('--result', '-r', dest='result',
 
 result_filepath = "sent-data/run1.json"
 args = parser.parse_args()
-conf = zenoh.Config.from_file(args.config) if args.config is not None else zenoh.Config()
+conf = zenoh.Config.from_file(
+    args.config) if args.config is not None else zenoh.Config()
 if args.mode is not None:
     conf.insert_json5(zenoh.config.MODE_KEY, json.dumps(args.mode))
 if args.connect is not None:
@@ -82,7 +83,9 @@ session = zenoh.open(conf)
 print(f"Declaring Publisher on '{key}'...")
 pub = session.declare_publisher(key)
 
-paylod_with_1MB = "a" * 1024 * 1024
+paylod_with_1MB = "a" * 1024 * 10
+
+time.sleep(5)
 
 start_time = int(time.time() * 1000)
 for idx in itertools.count() if args.iter is None else range(args.iter):
@@ -90,12 +93,16 @@ for idx in itertools.count() if args.iter is None else range(args.iter):
     sent_time = int(time.time() * 1000)
     sent_packet_info_list.append({"packet_id": idx, "sent_time": sent_time})
     pub.put(f"{idx},{paylod_with_1MB}")
+
+time.sleep(30)
+
 pub.undeclare()
 session.close()
 # convert packet info list to json and store to result_filepath
 data = {"start_time": start_time, "sent_packet_list": sent_packet_info_list}
 with open(result_filepath, "w+") as f:
     json.dump(data, f)
+
 
 print("Successfully write the sent packet list to a json file")
 print("Bye!")
