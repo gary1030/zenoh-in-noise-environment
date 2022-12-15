@@ -72,6 +72,7 @@ received_packet_list = []
 # Zenoh code  --- --- --- --- --- --- --- --- --- --- ---
 
 
+
 # initiate logging
 zenoh.init_logger()
 
@@ -86,25 +87,23 @@ def listener(sample: Sample):
     received_str = sample.payload.decode('utf-8')
     comma_index = received_str.find(",")
     received_packet_id = received_str[:comma_index]
-    received_packet_list.append(
-        {"packet_id": received_packet_id, "received_time": received_time})
+    received_packet_list.append({"packet_id": received_packet_id, "received_time": received_time})
     print(f"received packet id: {received_packet_id}")
 
 # WARNING, you MUST store the return value in order for the subscription to work!!
 # This is because if you don't, the reference counter will reach 0 and the subscription
 # will be immediately undeclared.
 
-
 print("The subscribe is ready to receive data! You can press any key to stop the subscription")
 start_time = int(time.time() * 1000)
-sub = session.declare_subscriber(
-    key, listener, reliability=Reliability.RELIABLE())
+sub = session.declare_subscriber(key, listener, reliability=Reliability.RELIABLE())
 
 
-time.sleep(400)
+time.sleep(30) 
+#is_end = input()
 print("Ending subscription...")
 
-# Cleanup: note that even if you forget it, cleanup will happen automatically when
+# Cleanup: note that even if you forget it, cleanup will happen automatically when 
 # the reference counter reaches 0
 
 sub.undeclare()
