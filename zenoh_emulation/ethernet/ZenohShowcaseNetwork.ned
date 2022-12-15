@@ -1,4 +1,4 @@
-package inet.showcases.emulation.videostreaming_backup;
+package inet.showcases.emulation.ethernet;
 
 import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
 import inet.physicallayer.wireless.ieee80211.packetlevel.Ieee80211ScalarRadioMedium;
@@ -12,7 +12,7 @@ import inet.node.wireless.AccessPoint;
 import inet.node.inet.WirelessHost;
 
 
-network VideoStreamingShowcase
+network ZenohShowcase
 {
     parameters:
         @display("bgb=1000,400");
