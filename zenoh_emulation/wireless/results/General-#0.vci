@@ -1,0 +1,555 @@
+file 31007 1671114907                                           
+version 3
+run General-0-20221215-22:34:58-8366
+attr configname General
+attr datetime 20221215-22:34:58
+attr datetimef 20221215-223458
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsd ""
+attr iterationvarsf ""
+attr measurement ""
+attr network VideoStreamingShowcase
+attr processid 8366
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+config image-path /home/daedluz/Programs/omnet/workspace/inet/images
+config network VideoStreamingShowcase
+config scheduler-class inet::RealTimeScheduler
+config sim-time-limit 30s
+config **.mac.promiscuous true
+config **.crcMode "\"computed\""
+config **.fcsMode "\"computed\""
+config *.host1.eth[0].typename ExtUpperEthernetInterface
+config *.host1.eth[0].device "\"tapa\""
+config *.host1.eth[0].copyConfiguration "\"copyFromExt\""
+config *.host1.numPcapRecorders 1
+config *.host1.pcapRecorder[*].pcapFile "\"results/host1.pcap\""
+config *.host2.numPcapRecorders 1
+config *.host2.pcapRecorder[*].pcapFile "\"results/host2.pcap\""
+config *.host2.wlan[*].mgmt.typename Ieee80211MgmtSta
+config *.host2.wlan[*].agent.typename Ieee80211AgentSta
+config *.host2.wlan[0].typename ExtUpperIeee80211Interface
+config *.host2.wlan[0].device "\"tapb\""
+config *.host2.wlan[0].mac.useAck false
+config *.configurator.config "xml(\"<config> \t\t\t\t<interface hosts='router' names='eth0' address='192.168.2.99' netmask='255.255.255.0'/>                                 <interface hosts='router' names='eth1' address='192.168.3.99' netmask='255.255.255.0'/> \t\t\t\t<wireless hosts='host2 switch2'/> \t\t\t\t<interface hosts='host2' names='wlan0' address='192.168.3.20'/>                             </config>\")"
+config *.router.ipv4.natTable.config "xml(\"<config>                                         <entry type='prerouting'                                         packetDataFilter='*Ipv4Header and destAddress=~192.168.2.99'                                         srcAddress='192.168.3.99' destAddress='192.168.3.20'/>                                         <entry type='prerouting'                                         packetDataFilter='*Ipv4Header and destAddress=~192.168.3.99'                                         srcAddress='192.168.2.99' destAddress='192.168.2.20'/>                                      </config>\")"
+config *.radioMedium.backgroundNoise.typename IsotropicScalarBackgroundNoise
+config *.radioMedium.backgroundNoise.power "-110 dBm"
+config *.visualizer.*.interfaceTableVisualizer.displayInterfaceTables true
+config *.visualizer.*.interfaceTableVisualizer.nodeFilter "\"not name=~switch*\""
+config **.duplexMode true
+config **.eth*.bitrate 10Mbps
+config *.*.ipv4.arp.typename GlobalArp
+config *.*.ipv4.routingTable.netmaskRoutes "\"\""
+config *.switch2.wlan[*].mgmt.typename Ieee80211MgmtAp
+config *.*.wlan[*].bitrate 54Mbps
+config *.router.numPcapRecorders 1
+config *.router.pcapRecorder[*].pcapFile "\"results/router.pcap\""
+config *.area1Router.numPcapRecorders 1
+config *.areaRouter.pcapRecorder[*].pcapFile "\"results/area1Router.pcap\""
+config *.router.numWlanInterfaces 1
+
+vector 0 VideoStreamingShowcase.switch1.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length"
+attr type int
+vector 1 VideoStreamingShowcase.switch1.eth[1].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length"
+attr type int
+vector 2 VideoStreamingShowcase.switch2.wlan[0].mac.dcf frameSequenceActive:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source warmup(count(frameSequenceStarted)-count(frameSequenceFinished))
+attr title "frame sequence active"
+vector 3 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length"
+attr type int
+vector 4 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetEnqueued) - count(packetDequeued))"
+attr title "queue length"
+vector 5 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.contention backoffActive:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source warmup(count(backoffStarted)-count(backoffStopped))
+attr title "backoff active"
+vector 6 VideoStreamingShowcase.switch2.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length"
+attr type int
+vector 7 VideoStreamingShowcase.router.wlan[0].mac.dcf frameSequenceActive:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source warmup(count(frameSequenceStarted)-count(frameSequenceFinished))
+attr title "frame sequence active"
+vector 8 VideoStreamingShowcase.router.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length"
+attr type int
+vector 9 VideoStreamingShowcase.router.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetEnqueued) - count(packetDequeued))"
+attr title "queue length"
+vector 10 VideoStreamingShowcase.router.wlan[0].mac.dcf.channelAccess.contention backoffActive:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source warmup(count(backoffStarted)-count(backoffStopped))
+attr title "backoff active"
+vector 11 VideoStreamingShowcase.router.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length"
+attr type int
+vector 12 VideoStreamingShowcase.router.eth[1].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length"
+attr type int
+vector 13 VideoStreamingShowcase.host1.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length"
+attr type int
+vector 14 VideoStreamingShowcase.host1.udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetSentToUpper
+attr title "packets passed up, count"
+vector 15 VideoStreamingShowcase.host1.udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+vector 16 VideoStreamingShowcase.host1.udp droppedPkBadChecksum:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+vector 17 VideoStreamingShowcase.host2.wlan[0].mac.dcf frameSequenceActive:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source warmup(count(frameSequenceStarted)-count(frameSequenceFinished))
+attr title "frame sequence active"
+vector 18 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length"
+attr type int
+vector 19 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(count(packetEnqueued) - count(packetDequeued))"
+attr title "queue length"
+vector 20 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.contention backoffActive:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source warmup(count(backoffStarted)-count(backoffStopped))
+attr title "backoff active"
+vector 21 VideoStreamingShowcase.host2.udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetSentToUpper
+attr title "packets passed up, count"
+vector 22 VideoStreamingShowcase.host2.udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+vector 23 VideoStreamingShowcase.host2.udp droppedPkBadChecksum:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+vector 24 VideoStreamingShowcase.switch2.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source radioModeChanged
+attr title "Radio mode"
+vector 25 VideoStreamingShowcase.switch2.wlan[0].radio radioChannel:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source radioChannelChanged
+attr title "Radio channel"
+vector 26 VideoStreamingShowcase.router.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source radioModeChanged
+attr title "Radio mode"
+vector 27 VideoStreamingShowcase.router.wlan[0].radio radioChannel:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source radioChannelChanged
+attr title "Radio channel"
+vector 28 VideoStreamingShowcase.host2.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source radioModeChanged
+attr title "Radio mode"
+vector 29 VideoStreamingShowcase.host2.wlan[0].radio radioChannel:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source radioChannelChanged
+attr title "Radio channel"
+vector 30 VideoStreamingShowcase.switch2.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source receptionStateChanged
+attr title "Radio reception state"
+vector 31 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.contention stateChanged:vector ETV
+attr enum IDLE,DEFER,IFS_AND_BACKOFF
+attr interpolationmode none
+attr recordingmode vector
+attr title "contention state changed"
+attr type enum
+vector 32 VideoStreamingShowcase.router.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source receptionStateChanged
+attr title "Radio reception state"
+vector 33 VideoStreamingShowcase.router.wlan[0].mac.dcf.channelAccess.contention stateChanged:vector ETV
+attr enum IDLE,DEFER,IFS_AND_BACKOFF
+attr interpolationmode none
+attr recordingmode vector
+attr title "contention state changed"
+attr type enum
+vector 34 VideoStreamingShowcase.host2.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source receptionStateChanged
+attr title "Radio reception state"
+vector 35 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.contention stateChanged:vector ETV
+attr enum IDLE,DEFER,IFS_AND_BACKOFF
+attr interpolationmode none
+attr recordingmode vector
+attr title "contention state changed"
+attr type enum
+vector 36 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr title "contention window"
+vector 37 VideoStreamingShowcase.router.wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr title "contention window"
+vector 38 VideoStreamingShowcase.host2.wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr title "contention window"
+vector 39 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packet pushed, packetBytes"
+vector 40 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.contention backoffPeriodGenerated:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "backoff periods"
+vector 41 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.pendingQueue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packet pulled, packetBytes"
+vector 42 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+vector 43 VideoStreamingShowcase.switch2.wlan[0].mac.dcf datarateSelected:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "datarates selected"
+vector 44 VideoStreamingShowcase.switch2.wlan[0].mac packetSentToLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packets sent to lower layer, packetBytes"
+vector 45 VideoStreamingShowcase.switch2.wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source transmissionStateChanged
+attr title "Radio transmission state"
+vector 46 VideoStreamingShowcase.switch2.wlan[0].mac.dcf packetSentToPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packets sent, packetBytes"
+vector 47 VideoStreamingShowcase.switch2.wlan[0].mac.dcf packetSentToPeerMulticast:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Multicast(packetSentToPeer)
+attr title "packets sent: multicast, packetBytes"
+vector 48 VideoStreamingShowcase.switch2.wlan[0].mac.dcf packetSentToPeerBroadcast:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Broadcast(packetSentToPeer)
+attr title "packets sent: broadcast , packetBytes"
+vector 49 VideoStreamingShowcase.switch2.wlan[0].mac.dcf packetSentToPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211NotRetry(packetSentToPeer)
+attr title "packets sent: without retry, packetBytes"
+vector 50 VideoStreamingShowcase.switch2.wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetDequeued)
+attr title "queueing times"
+vector 51 VideoStreamingShowcase.router.wlan[0].mac packetReceivedFromLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packets received from lower layer, packetBytes"
+vector 52 VideoStreamingShowcase.router.wlan[0].mac.dcf packetReceivedFromPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packets received, packetBytes"
+vector 53 VideoStreamingShowcase.router.wlan[0].mac.dcf packetReceivedFromPeerMulticast:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Multicast(packetReceivedFromPeer)
+attr title "packets received: multicast, packetBytes"
+vector 54 VideoStreamingShowcase.router.wlan[0].mac.dcf packetReceivedFromPeerBroadcast:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Broadcast(packetReceivedFromPeer)
+attr title "packets received: broadcast, packetBytes"
+vector 55 VideoStreamingShowcase.router.wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211NotRetry(packetReceivedFromPeer)
+attr title "packets received: without retry, packetBytes"
+vector 56 VideoStreamingShowcase.router.wlan[0].agent sentRequest:vector ETV
+attr recordingmode vector
+attr title "sent requests"
+vector 57 VideoStreamingShowcase.host2.wlan[0].agent sentRequest:vector ETV
+attr recordingmode vector
+attr title "sent requests"
+vector 58 VideoStreamingShowcase.router.wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packet pushed, packetBytes"
+vector 59 VideoStreamingShowcase.router.wlan[0].mac.dcf.channelAccess.contention backoffPeriodGenerated:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "backoff periods"
+vector 60 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packet pushed, packetBytes"
+vector 61 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.contention backoffPeriodGenerated:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "backoff periods"
+vector 62 VideoStreamingShowcase.router.wlan[0].mac.dcf.channelAccess.pendingQueue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packet pulled, packetBytes"
+vector 63 VideoStreamingShowcase.router.wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+vector 64 VideoStreamingShowcase.router.wlan[0].mac.dcf datarateSelected:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "datarates selected"
+vector 65 VideoStreamingShowcase.router.wlan[0].mac packetSentToLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packets sent to lower layer, packetBytes"
+vector 66 VideoStreamingShowcase.router.wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source transmissionStateChanged
+attr title "Radio transmission state"
+vector 67 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.pendingQueue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packet pulled, packetBytes"
+vector 68 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+vector 69 VideoStreamingShowcase.host2.wlan[0].mac.dcf datarateSelected:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "datarates selected"
+vector 70 VideoStreamingShowcase.host2.wlan[0].mac packetSentToLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packets sent to lower layer, packetBytes"
+vector 71 VideoStreamingShowcase.host2.wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source transmissionStateChanged
+attr title "Radio transmission state"
+vector 72 VideoStreamingShowcase.router.wlan[0].mac.dcf packetSentToPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packets sent, packetBytes"
+vector 73 VideoStreamingShowcase.router.wlan[0].mac.dcf packetSentToPeerMulticast:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Multicast(packetSentToPeer)
+attr title "packets sent: multicast, packetBytes"
+vector 74 VideoStreamingShowcase.router.wlan[0].mac.dcf packetSentToPeerBroadcast:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Broadcast(packetSentToPeer)
+attr title "packets sent: broadcast , packetBytes"
+vector 75 VideoStreamingShowcase.router.wlan[0].mac.dcf packetSentToPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211NotRetry(packetSentToPeer)
+attr title "packets sent: without retry, packetBytes"
+vector 76 VideoStreamingShowcase.router.wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetDequeued)
+attr title "queueing times"
+vector 77 VideoStreamingShowcase.host2.wlan[0].mac.dcf packetSentToPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr title "packets sent, packetBytes"
+vector 78 VideoStreamingShowcase.host2.wlan[0].mac.dcf packetSentToPeerMulticast:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Multicast(packetSentToPeer)
+attr title "packets sent: multicast, packetBytes"
+vector 79 VideoStreamingShowcase.host2.wlan[0].mac.dcf packetSentToPeerBroadcast:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211Broadcast(packetSentToPeer)
+attr title "packets sent: broadcast , packetBytes"
+vector 80 VideoStreamingShowcase.host2.wlan[0].mac.dcf packetSentToPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source ieee80211NotRetry(packetSentToPeer)
+attr title "packets sent: without retry, packetBytes"
+vector 81 VideoStreamingShowcase.host2.wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetDequeued)
+attr title "queueing times"
+0	23061 32 0 0 0 0 4 0 0 0 0
+1	23093 32 0 0 0 0 4 0 0 0 0
+2	23125 231 0 101 0 0.453860901656 12 0 1 5 5
+3	23356 241 0 81 0 0.438438170822 14 0 2 7 9
+4	23597 231 0 101 0 0.453860901656 12 0 2 7 9
+5	23828 226 0 94 0 0.444384901656 12 0 1 5 5
+6	24054 32 0 0 0 0 4 0 0 0 0
+7	24086 60 0 63 0 0.293806234528 4 0 1 1 1
+8	24146 76 0 51 0 0.293768234528 6 0 1 1 1
+9	24222 60 0 63 0 0.293806234528 4 0 1 1 1
+10	24282 64 0 46 0 0.293768234528 4 0 1 1 1
+11	24346 36 0 0 0 0 4 0 0 0 0
+12	24382 36 0 0 0 0 4 0 0 0 0
+13	24418 36 0 0 0 0 4 0 0 0 0
+14	24454 9 0 0 0 0 1 0 0 0 0
+15	24463 9 0 0 0 0 1 0 0 0 0
+16	24472 9 0 0 0 0 1 0 0 0 0
+17	24481 64 0 65 0 0.293806901656 4 0 1 1 1
+18	24545 82 0 54 0 0.293768234528 6 0 1 1 1
+19	24627 64 0 65 0 0.293806901656 4 0 1 1 1
+20	24691 64 0 47 0 0.293768234528 4 0 1 1 1
+21	24755 9 0 0 0 0 1 0 0 0 0
+22	24764 9 0 0 0 0 1 0 0 0 0
+23	24773 9 0 0 0 0 1 0 0 0 0
+24	24782 252 0 102 0 0.453861568784 13 0 3 27 69
+25	25034 9 0 0 0 0 1 0 0 0 0
+26	25043 73 0 64 0 0.293806901656 5 0 3 7 17
+27	25116 32 0 36 0 0.193768234528 2 0 0 0 0
+28	25148 73 0 67 0 0.293807568784 5 0 3 7 17
+29	25221 32 0 39 0 0.238438170822 2 0 0 0 0
+30	25253 234 0 102 0 0.453861568784 11 0 1 6 6
+31	25487 910 0 102 0 0.453861568784 42 0 2 24 44
+32	26397 260 0 103 0 0.453861568784 12 0 3 20 46
+33	26657 566 0 103 0 0.453861568784 26 0 2 4 8
+34	27223 238 0 100 0 0.453860901656 11 0 2 15 25
+35	27461 522 0 100 0 0.453860901656 24 0 2 4 8
+36	27983 10 0 0 0 0 1 31 31 31 961
+37	27993 10 0 0 0 0 1 31 31 31 961
+38	28003 10 0 0 0 0 1 31 31 31 961
+39	28013 114 2 79 0.092252776 0.438438170822 5 48 48 240 11520
+40	28127 114 2 88 0.092252776 0.443814234528 5 4 26 71 1401
+41	28241 115 4 81 0.092252776 0.438438170822 5 48 48 240 11520
+42	28356 151 4 81 0.092252776 0.438438170822 5 0 0.1 0.209701336012 0.015957737558465
+43	28507 145 4 95 0.092252776 0.444384901656 5 24000000 24000000 120000000 2.88e+15
+44	28652 115 4 95 0.092252776 0.444384901656 5 48 48 240 11520
+45	28767 453 5 102 0.092252776 0.453861568784 20 0 2 20 30
+46	29220 120 11 101 0.138484170822 0.453860901656 5 48 48 240 11520
+47	29340 120 11 101 0.138484170822 0.453860901656 5 48 48 240 11520
+48	29460 120 11 101 0.138484170822 0.453860901656 5 48 48 240 11520
+49	29580 120 11 101 0.138484170822 0.453860901656 5 48 48 240 11520
+50	29700 167 11 101 0.138484170822 0.453860901656 5 4.6e-05 0.046231394822 0.076612189362 0.0024950419665366
+51	29867 71 15 92 0.13899483795 0.444384901656 3 48 48 144 6912
+52	29938 71 15 92 0.13899483795 0.444384901656 3 48 48 144 6912
+53	30009 71 15 92 0.13899483795 0.444384901656 3 48 48 144 6912
+54	30080 71 15 92 0.13899483795 0.444384901656 3 48 48 144 6912
+55	30151 71 15 92 0.13899483795 0.444384901656 3 48 48 144 6912
+56	30222 23 31 31 0.187069108919 0.187069108919 1 1 1 1 1
+57	30245 23 33 33 0.193768234528 0.193768234528 1 1 1 1 1
+58	30268 24 43 43 0.293768234528 0.293768234528 1 32 32 32 1024
+59	30292 24 43 43 0.293768234528 0.293768234528 1 24 24 24 576
+60	30316 24 44 44 0.293768234528 0.293768234528 1 32 32 32 1024
+61	30340 24 44 44 0.293768234528 0.293768234528 1 24 24 24 576
+62	30364 24 51 51 0.293768234528 0.293768234528 1 32 32 32 1024
+63	30388 23 51 51 0.293768234528 0.293768234528 1 0 0 0 0
+64	30411 30 51 51 0.293768234528 0.293768234528 1 24000000 24000000 24000000 5.76e+14
+65	30441 24 51 51 0.293768234528 0.293768234528 1 32 32 32 1024
+66	30465 92 52 64 0.293768234528 0.293806901656 4 0 2 4 6
+67	30557 24 54 54 0.293768234528 0.293768234528 1 32 32 32 1024
+68	30581 23 54 54 0.293768234528 0.293768234528 1 0 0 0 0
+69	30604 30 54 54 0.293768234528 0.293768234528 1 24000000 24000000 24000000 5.76e+14
+70	30634 24 54 54 0.293768234528 0.293768234528 1 32 32 32 1024
+71	30658 92 55 67 0.293768234528 0.293807568784 4 0 2 4 6
+72	30750 24 63 63 0.293806234528 0.293806234528 1 32 32 32 1024
+73	30774 24 63 63 0.293806234528 0.293806234528 1 32 32 32 1024
+74	30798 24 63 63 0.293806234528 0.293806234528 1 32 32 32 1024
+75	30822 24 63 63 0.293806234528 0.293806234528 1 32 32 32 1024
+76	30846 29 63 63 0.293806234528 0.293806234528 1 3.8e-05 3.8e-05 3.8e-05 1.444e-09
+77	30875 24 65 65 0.293806901656 0.293806901656 1 32 32 32 1024
+78	30899 24 65 65 0.293806901656 0.293806901656 1 32 32 32 1024
+79	30923 24 65 65 0.293806901656 0.293806901656 1 32 32 32 1024
+80	30947 24 65 65 0.293806901656 0.293806901656 1 32 32 32 1024
+81	30971 35 65 65 0.293806901656 0.293806901656 1 3.8667128e-05 3.8667128e-05 3.8667128e-05 1.4951467877684e-09
+
