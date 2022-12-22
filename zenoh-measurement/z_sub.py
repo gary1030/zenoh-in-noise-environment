@@ -96,7 +96,7 @@ def listener(sample: Sample):
 
 
 print("The subscribe is ready to receive data! You can press any key to stop the subscription")
-start_time = int(time.time() * 1000)
+start_time = int(time.time() * 1000000)
 sub = session.declare_subscriber(
     key, listener, reliability=Reliability.RELIABLE())
 
