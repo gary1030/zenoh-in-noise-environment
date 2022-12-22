@@ -101,7 +101,7 @@ sub = session.declare_subscriber(
     key, listener, reliability=Reliability.RELIABLE())
 
 
-time.sleep(300)
+time.sleep(360)
 print("Ending subscription...")
 
 # Cleanup: note that even if you forget it, cleanup will happen automatically when
