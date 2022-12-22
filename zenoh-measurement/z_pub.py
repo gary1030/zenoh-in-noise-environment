@@ -83,7 +83,7 @@ session = zenoh.open(conf)
 print(f"Declaring Publisher on '{key}'...")
 pub = session.declare_publisher(key)
 
-paylod_with_1MB = "a" * 1024 * 500
+paylod_with_1MB = "a" * 1024 * 8
 
 time.sleep(5)
 
@@ -103,7 +103,7 @@ for idx in itertools.count() if args.iter is None else range(args.iter):
     pub.put(f"{idx},{paylod_with_1MB}")
     time.sleep(0.01)
 
-time.sleep(30)
+time.sleep(10)
 
 pub.undeclare()
 session.close()
