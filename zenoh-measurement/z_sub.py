@@ -82,7 +82,7 @@ print("Declaring Subscriber on '{}'...".format(key))
 
 
 def listener(sample: Sample):
-    received_time = int(time.time() * 1000)
+    received_time = int(time.time() * 1000000)
     received_str = sample.payload.decode('utf-8')
     comma_index = received_str.find(",")
     received_packet_id = received_str[:comma_index]
@@ -96,12 +96,12 @@ def listener(sample: Sample):
 
 
 print("The subscribe is ready to receive data! You can press any key to stop the subscription")
-start_time = int(time.time() * 1000)
+start_time = int(time.time() * 1000000)
 sub = session.declare_subscriber(
     key, listener, reliability=Reliability.RELIABLE())
 
 
-time.sleep(400)
+time.sleep(300)
 print("Ending subscription...")
 
 # Cleanup: note that even if you forget it, cleanup will happen automatically when
