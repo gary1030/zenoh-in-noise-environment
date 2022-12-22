@@ -83,7 +83,7 @@ session = zenoh.open(conf)
 print(f"Declaring Publisher on '{key}'...")
 pub = session.declare_publisher(key)
 
-paylod_with_1MB = "a" * 1024
+paylod_with_1MB = "a" * 1024 * 10
 
 time.sleep(5)
 
