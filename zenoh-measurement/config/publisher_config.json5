@@ -2,7 +2,7 @@
   mode: "peer",
   listen: {
     endpoints: [
-      "tcp/192.168.56.101:7447"
+      "tcp/192.168.51.14:7447"
     ]
   },
   scouting: {
