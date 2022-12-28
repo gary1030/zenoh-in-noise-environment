@@ -46,32 +46,32 @@ Due to the problems encountered in the previous two methods, we decide to use a 
 In this experiment, we use `zenoh` as the pub/sub protocol. We sent 15000 messages with 10, 100, 500 KB payload and randomly drop 0%, 5%, 10%, 15%, 25% of the packets. We record the latency of each message, and plot the result. The result is shown below.
 
 ##### 10 KB Payload
-![](zenoh-measurement\pictures\10kb.jpg)
+![](./zenoh-measurement/pictures/10kb.jpg)
 
 ##### 100 KB Payload
-![](zenoh-measurement\pictures\100kb.jpg)
+![](./zenoh-measurement/pictures/100kb.jpg)
 
 ##### 500 KB Payload
-![](zenoh-measurement\pictures\500kb.jpg)
+![](./zenoh-measurement/pictures/500kb.jpg)
 In this scenario, we only drop 0, 5, 10, 15% of the packets due to the limitation of the machines and time. And we only sent 5000 packets in 10% and 15% drop rate scenarios due to the same reason. 
 
 #### Result Visualization
 We use `matplotlib` to plot the result. The picture is shown below:
-![](zenoh-measurement\pictures\experiement1_visualization.png)
+![](./zenoh-measurement/pictures/experiement1_visualization.png)
 
 From above figure, we can see that latency indeed increases when drop rate increases, and larger payload size leads to higher latency. But what is more interesting is that around 22% drop rate, the latency of 100KB payload is lower than 10KB payload. We think this is because 10KB payload is very small, and the protocol will try to resend the message, which leads to higher latency. But when the payload becomes larger, 
 #### Experiment 2 - Different Payload Size vs. Latency
 In this experiment, we use `zenoh` as the pub/sub protocol. We fix drop rate to 10%, and sent 15000 packets with 1, 4, 8, 16, 32, 64, 256, 512, 1024 KB payload. We record the average delay and actual drop rate, and plot the result. The result is shown below.
 
-![](zenoh-measurement\pictures\experiment2_table.jpg)
+![](./zenoh-measurement/pictures/experiment2_table.jpg)
 
 ##### Payload Size vs. Average Delay with 10% Drop Rate Noise
-![](zenoh-measurement\pictures\experiment2_fig1.png)
+![](./zenoh-measurement/pictures/experiment2_fig1.png)
 
 From above result, we can see that the average delay increases when payload size increases. And if 500ms is the maximum acceptable delay, then we should try to prevent sending payload larger than 64KB.
 
 ##### Payload Size vs. Actual Drop Rate with 10% Drop Rate Noise
-![](zenoh-measurement\pictures\experiment2_fig2.png)
+![](./zenoh-measurement/pictures/experiment2_fig2.png)
 
 From above result, we can infer that if there exists a noisy environment with 10% packet drop rate, then maybe dividing the payload into 4 to 6KB chunks. Because this kind of payload size can achieve better performance in terms of latency and drop rate. 
 ## Conclusion
