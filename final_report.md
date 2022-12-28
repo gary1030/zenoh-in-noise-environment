@@ -29,6 +29,10 @@ We want to simulate a environment that is close to the real world scenerio, and 
 
 ### INET + Veins + Sumo
 
+Sumo is a simulator based on OMNet++, and is used to traffic simulation, while OMNet++ is focused on network simulation. And Veins is a package that makes Sumo work with OMNet++, let us combine the good in both sides.
+
+Unfortunately, the instructions are unclear, so we couldn't customize it to fit our desired scnerio. Plus, integrating Zenoh into this setup seems hard to be done in a semester, so we decided to try out other methods.
+
 ### INET + Emulation
 
 ### Adjust Packet Drop Rate
