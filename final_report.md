@@ -60,8 +60,9 @@ In this experiment, we use `zenoh` as the pub/sub protocol. We sent 15000 messag
 In this scenario, we only drop 0, 5, 10, 15% of the packets due to the limitation of the machines and time. And we only sent 5000 packets in 10% and 15% drop rate scenarios due to the same reason. 
 
 #### Result Visualization
-We use `matplotlib` to plot the result. The picture is shown below:
-![](./zenoh-measurement/pictures/experiement1_visualization.jpg)
+We use `matplotlib` to plot the result. The picture is shown below:  
+
+![](./zenoh-measurement/pictures/experiement1_visualization.jpg)  
 
 From above figure, we can see that latency indeed increases when drop rate increases, and larger payload size leads to higher latency. But what is more interesting is that around 22% drop rate, the latency of 100KB payload is lower than 10KB payload. We think this is because 10KB payload is very small, and the protocol will try to resend the message, which leads to higher latency. But when the payload becomes larger, 
 #### Experiment 2 - Different Payload Size vs. Latency
