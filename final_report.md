@@ -34,6 +34,23 @@ Sumo is a simulator based on OMNet++, and is used to traffic simulation, while O
 Unfortunately, the instructions are unclear, so we couldn't customize it to fit our desired scnerio. Plus, integrating Zenoh into this setup seems hard to be done in a semester, so we decided to try out other methods.
 
 ### INET + Emulation
+INET's feature, emulation, is a way to create a simulated network environment, and let real applications run on this simulated network.
+We first tried to install INET on OMNet++ and try out the examples, but the versions are not compatiable. So we spent some time looking for compatiable versions of INET and OMNet++.
+
+First, we modified the example. We first let two clients connect with ethernet like shown below. We succesfully run Zenoh on this simulated network environment. However, the results aren't as expected. With a 100M link speed and without any noises, there are still some packet loss. After some discussion, we think the cause of this might be these reasons:
+- Our computation resource (my laptop) isn't powerful enough to compute the emulation process in real time, thus leads to some packet loss
+- We send data too fast, which made the router's waiting queue full, and router drops the packet
+![](https://i.imgur.com/MhROjyq.png)
+
+We decided to try a powerful computer to eliminate the possibility of insufficient computation resource leading to packet loss, while attempting to modify the network environment into wireless mode.
+![](https://i.imgur.com/614E2CE.png)
+
+
+Unfortunately, we failed to convert the network environment into wireless mode. The wireless client couldn't receive any packet or send any packet.
+We inspected the packet record for the router and discovered that although router gets an ARP request from the wireless client asking for the mac address for another client, the router doesn't respond to that request, thus make the wireless client unable to do transmission or receive any packet. 
+
+We couldn't find any documentation about this problem, and we couldn't think of a way to resolve it. Moreover, we didn't see any options to increase the router's buffer size.
+Because there's not much time left, and we've stuck on this problem for a while, so we decided to think of another way to measure zenoh's performance.
 
 ### Adjust Packet Drop Rate
 Due to the problems encountered in the previous two methods, we decide to use a more simple method to simulate the packet drop rate. We use `iptable`, which is a module that enables user to take control of the packet flow. We use `iptables` to drop some packets, and see how the protocols deal with it.
