@@ -5,8 +5,10 @@
 - [Final Report](#final-report)
   - [Table of Contents](#table-of-contents)
   - [Objective](#objective)
+    - [About Packet Drop Rate (From Wikipedia)](#about-packet-drop-rate-from-wikipedia)
   - [Methods](#methods)
     - [INET + Veins + Sumo](#inet--veins--sumo)
+      - [Why is this method unpractical](#why-is-this-method-unpractical)
     - [INET + Emulation](#inet--emulation)
     - [Adjust Packet Drop Rate](#adjust-packet-drop-rate)
       - [Experiment Setup](#experiment-setup)
@@ -18,6 +20,11 @@
       - [Experiment 2 - Different Payload Size vs. Latency](#experiment-2---different-payload-size-vs-latency)
         - [Payload Size vs. Average Delay with 10% Drop Rate Noise](#payload-size-vs-average-delay-with-10-drop-rate-noise)
         - [Payload Size vs. Actual Drop Rate with 10% Drop Rate Noise](#payload-size-vs-actual-drop-rate-with-10-drop-rate-noise)
+      - [Experiment Conclusion](#experiment-conclusion)
+      - [Packet Analysis](#packet-analysis)
+        - [10KB Payload Size with 0% Drop Rate](#10kb-payload-size-with-0-drop-rate)
+        - [10KB Payload Size with 5% Drop Rate](#10kb-payload-size-with-5-drop-rate)
+        - [10KB Payload Size with 10% Drop Rate](#10kb-payload-size-with-10-drop-rate)
   - [Conclusion](#conclusion)
 
 ## Objective
@@ -115,5 +122,33 @@ From above result, we can infer that if there exists a noisy environment with 10
 - In 10% drop rate environment, 4KB~6KB payload size is recommended.
 
 #### Packet Analysis
+##### 10KB Payload Size with 0% Drop Rate
+- 一開始會是一個封包一個 ACK
+- 之後如果網路都是順暢的，因為送很快，會兩個封包才傳一次ACK，所以 TCP 在收到後面的 ACK 之後會默認前面有收到
 
+##### 10KB Payload Size with 5% Drop Rate
+- 實際上的 drop rate: 0.186%
+- 會開始有重送機制 (TCP retransmission)
+- 一開始都很順，少部分發生 packet segmentation，變成使用兩個封包來傳送一則訊息
+- 因為切成兩個訊息，所以也會收到兩個 ACK
+- 在網路又變得更差之後，packet segmentation 會開始把封包切成更多份
+
+![](https://i.imgur.com/YnVSZ9m.png)
+
+![](https://i.imgur.com/S4yp3BI.png)
+
+##### 10KB Payload Size with 10% Drop Rate
+- 實際上的 drop rate: 32.74%
+- 會有很多的 retransmission，部分編號的封包沒有被記錄在 pcap 檔案中，推測是 Zenoh 的 buffer 爆掉了。
+
+![](https://i.imgur.com/ZcEJ5rl.png)
+
+![](https://i.imgur.com/vthKi2n.png)
+## Conclusion
+
+- In 5% drop rate environment, zenoh performs well when sending message with 10KB size.
+- We need to improve high drop rate in 10% drop rate environment.
+  - Compress data to convey more information in less payload size (1KB~6KB)
+  - Try to reassemble packet to a proper packet size at sender
+- There is still a lot of work to run zenoh on INET.
 
