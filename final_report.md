@@ -25,6 +25,10 @@
 There are a lot of pub/sub protocols for v2v, such as `mqtt`, `zenoh`, and `kafka`. They all perform great in a closed network. But in real world scenerio, there are usually a lot of noises, like Wi-Fi, celluar network, and bluetooth. These noises could lead to packet loss and message delay, which would hurt the performance of these protocols.
 We want to simulate a environment that is close to the real world scenerio, and see how different protocols deal with these.
 
+### About Packet Drop Rate (From Wikipedia)
+- Losses between 5% and 10% of the total packet stream will affect the quality significantly."
+- Less than 1% packet loss as "good" for streaming audio or video, and 1–2.5% as "acceptable".
+
 ## Methods
 
 ### INET + Veins + Sumo
@@ -102,4 +106,14 @@ From above result, we can see that the average delay increases when payload size
 ![](./zenoh-measurement/pictures/experiment2_fig2.jpg)
 
 From above result, we can infer that if there exists a noisy environment with 10% packet drop rate, then maybe dividing the payload into 4 to 6KB chunks. Because this kind of payload size can achieve better performance in terms of latency and drop rate. 
-## Conclusion
+#### Experiment Conclusion
+- Zenoh and TCP perform well when sending 10KB message with 5% packet drop rate
+- Need to improve
+  - when sending 10KB message with 10% packet drop rate
+  - when sending 100KB message with 5% packet drop rate
+- Sending 500KB message is not recommended.
+- In 10% drop rate environment, 4KB~6KB payload size is recommended.
+
+#### Packet Analysis
+
+
