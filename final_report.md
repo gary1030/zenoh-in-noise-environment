@@ -33,7 +33,10 @@ Sumo is a simulator based on OMNet++, and is used to traffic simulation, while O
 
 [Demo video](https://drive.google.com/file/d/1CiNEqb_qyAmbVZknhGPgUhRbyxzlmtUo/view?resourcekey)
 
-Unfortunately, the instructions are unclear, so we couldn't customize it to fit our desired scnerio. Plus, integrating Zenoh into this setup seems hard to be done in a semester, so we decided to try out other methods.
+#### Why is this method unpractical
+- VEINS & SUMO are used to simulate “events”, which means they are not for performance evaluation purposes.
+- the instructions are unclear, so we couldn't customize it to fit our desired scnerio.
+- Plus, integrating Zenoh into this setup seems hard to be done in a semester, so we decided to try out other methods.
 
 ### INET + Emulation
 
