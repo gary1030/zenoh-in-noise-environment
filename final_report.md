@@ -67,6 +67,7 @@ Due to the problems encountered in the previous two methods, we decide to use a 
   * Network: Host-Only (to avoid other interference)
   * iso: archlinux-2022.12.01-x86_64.iso
 * Randomly drop different percentage of packets using `iptables` to simulate packet loss in a noisy environment
+* [Environment Setup](https://hackmd.io/n1MLnX2DQ6K1USQNakiXMQ)
 
 #### Experiment 1 - Different Packet Drop Rate vs. Latency
 In this experiment, we use `zenoh` as the pub/sub protocol. We sent 15000 messages with 10, 100, 500 KB payload and randomly drop 0%, 5%, 10%, 15%, 25% of the packets. We record the latency of each message, and plot the result. The result is shown below.
