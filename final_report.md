@@ -147,7 +147,7 @@ From above result, we can infer that if there exists a noisy environment with 10
 ## Conclusion
 
 - In 5% drop rate environment, zenoh performs well when sending message with 10KB size.
-- We need to improve high drop rate in 10% drop rate environment.
+- We need to improve performance in 10% drop rate environment.
   - Compress data to convey more information in less payload size (1KB~6KB)
   - Try to reassemble packet to a proper packet size at sender
 - There is still a lot of work to run zenoh on INET.
