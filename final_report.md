@@ -66,7 +66,7 @@ Unfortunately, we failed to convert the network environment into wireless mode. 
 We inspected the packet record for the router and discovered that although router gets an ARP request from the wireless client asking for the mac address for another client, the router doesn't respond to that request, thus make the wireless client unable to do transmission or receive any packet. 
 
 We couldn't find any documentation about this problem, and we couldn't think of a way to resolve it. Moreover, we didn't see any options to increase the router's buffer size.
-Because there's not much time left, and we've stuck on this problem for a while, so we decided to think of another way to measure zenoh's performance.
+Beause of the computation overhead and configuration problem, we don't think INET emulation is a appropriate way of evaluating network performance.
 
 ### Adjust Packet Drop Rate
 Due to the problems encountered in the previous two methods, we decide to use a more simple method to simulate the packet drop rate. We use `iptable`, which is a module that enables user to take control of the packet flow. We use `iptables` to drop some packets, and see how the protocols deal with it.
