@@ -71,6 +71,19 @@ Beause of the computation overhead and configuration problem, we don't think INE
 ### Adjust Packet Drop Rate
 Due to the problems encountered in the previous two methods, we decide to use a more simple method to simulate the packet drop rate. We use `iptable`, which is a module that enables user to take control of the packet flow. We use `iptables` to drop some packets, and see how the protocols deal with it.
 
+#### Preface
+
+Reasons of packet loss:
+* Transmission too fast, the queue is full, so the node would drop the packet
+* When SNR is too low, the node couldn't decode the packet correctly, so the packet would be dropped 
+
+Here's a diagram about SNR and packet loss rate, with different packet size:
+![](https://i.imgur.com/bNYZgz7.png)
+
+This diagram can also serve as a heads up to how distance affect the coneection reliability of a v2v scnerio.
+For example, within 60m, the SNR would be strong enough to transmit every packet without loss (if there aren't any other noise interference).
+In a v2v scenerio, veichles could be in different positions and have different distances, we think that it would be a good idea to measure how Zenoh would perform in different packet loss rate and different packet size.
+
 #### Experiment Setup
 * 2 VMs, one for the publisher, one for the subscriber
   * RAM: 6GB
